@@ -45,7 +45,7 @@ class HistoricScreen extends StatelessWidget {
         children: <Widget>[
           (historic.userName   != null ) ?  _historicItemData( Icons.contacts, historic.userName )       : Container(),
           (historic.action   != null )   ?  _historicItemData( Icons.poll, historic.action )             : Container(),
-          (historic.createdAt != null ) ?  _historicItemData( Icons.code, historic.createdAt.toIso8601String()) : Container(),
+          (historic.createdAt != null )  ?  _historicItemData( Icons.code, historic.createdAt.toIso8601String()) : Container(),
         ],
       ),
     );

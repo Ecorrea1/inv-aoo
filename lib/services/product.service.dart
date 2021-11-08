@@ -14,12 +14,7 @@ class ProductService {
   List<Product> get products => _productController.value;
   List<Product> _allProduct = [];
 
-  Future<ProductResponse> getProductList(
-      {String name,
-      String group,
-      String category,
-      String ubication,
-      bool active}) async {
+  Future<ProductResponse> getProductList({ String name, String group, String category, String ubication, bool active }) async {
     try {
       String query = '';
       query += name != null ? 'name=$name&' : '';
@@ -28,7 +23,7 @@ class ProductService {
       query += ubication != null ? 'ubication=$ubication&' : '';
       query += active != null ? 'active=$active&' : '';
 
-      (group == 'Todos') ? query = '' : query;
+      if(group == 'Todos') query = '';
 
       final resp = await http.get(
           Uri.parse('${Enviroments.apiUrl}/product/products?$query'),
@@ -49,7 +44,7 @@ class ProductService {
     }
   }
 
-  Future<bool> addNewProduct({final data}) async {
+  Future<bool> addNewProduct({ final data }) async {
     // name, img, category, quantity, price, ubication, observations, user
     try {
       final resp = await http.post(
@@ -75,7 +70,7 @@ class ProductService {
     }
   }
 
-  Future<bool> updateProduct({@required String uid, final data}) async {
+  Future<bool> updateProduct({ @required String uid, final data }) async {
     try {
       final resp = await http.put(
           Uri.parse('${Enviroments.apiUrl}/product/$uid'),
@@ -98,7 +93,7 @@ class ProductService {
     }
   }
 
-  Future<bool> deleteProduct({@required String uid, String user}) async {
+  Future<bool> deleteProduct({ @required String uid, String user }) async {
     try {
       final resp = await http.post(
           Uri.parse('${Enviroments.apiUrl}/product/$uid'),
@@ -119,17 +114,15 @@ class ProductService {
     }
   }
 
-  void applyFilter(String filter) {
+  void applyFilter( String filter ) {
     changeProduct(this
         ._allProduct
         .where((products) =>
             products.category.toUpperCase().contains(filter.toUpperCase()) ||
-            products.ubication.toUpperCase().contains(filter.toUpperCase()) ||
-            products.price.toString().contains(filter.toUpperCase()) ||
-            products.quantity.toString().contains(filter.toUpperCase()) ||
-            products.observations
-                .toUpperCase()
-                .contains(filter.toUpperCase()) ||
+            products.price.toString().contains(filter) ||
+            products.quantity.toString().contains(filter) ||
+            // products.ubication.toUpperCase().contains(filter.toUpperCase()) ||
+            // products.observations.toUpperCase().contains(filter.toUpperCase()) ||
             products.name.toUpperCase().contains(filter.toUpperCase()))
         .toList());
   }

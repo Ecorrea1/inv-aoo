@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:invapp/models/config/config_model.dart';
-import 'package:invapp/models/product/product_model.dart';
 
-ConfigResponse productFromJson( String str ) => ConfigResponse.fromJson( json.decode( str ) );
-String productToJson( ConfigResponse data )  => json.encode( data.toJson() );
+ConfigResponse configFromJson( String str ) => ConfigResponse.fromJson( json.decode( str ) );
+String configToJson( ConfigResponse data )  => json.encode( data.toJson() );
 
 class ConfigResponse {
   
