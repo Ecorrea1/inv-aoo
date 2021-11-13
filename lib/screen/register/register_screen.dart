@@ -3,7 +3,6 @@ import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/widgets/alert.dart';
 import 'package:invapp/widgets/buttons.dart';
 import 'package:invapp/widgets/custom_iput.dart';
-import 'package:invapp/widgets/labels_login.dart';
 import 'package:invapp/widgets/logo_login.dart';
 import 'package:provider/provider.dart';
 

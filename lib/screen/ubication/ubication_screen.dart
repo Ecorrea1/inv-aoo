@@ -185,6 +185,6 @@ class UbicationScreen extends StatelessWidget {
 
   _addInfoController({ name }) async { textController.text = name; }
 
-  _cleanController() { textController.text = ''; }
+  // _cleanController() { textController.text = ''; }
 
 }

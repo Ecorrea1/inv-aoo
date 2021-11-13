@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:invapp/models/historic/historic.model.dart';
-import 'package:invapp/utils/icons_string_util.dart';
 
 class HistoricScreen extends StatelessWidget {
 

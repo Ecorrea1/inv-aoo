@@ -146,7 +146,7 @@ class AddProductScreen extends StatelessWidget {
     
     };
 
-    bool resp = await _productService.addNewProduct( data: data );
+    final bool resp = await _productService.addNewProduct( data: data );
 
     if (resp) {
 

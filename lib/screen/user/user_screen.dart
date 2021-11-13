@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:invapp/models/user/user.model.dart';
 import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/user_service.dart';
 import 'package:invapp/utils/icons_string_util.dart';

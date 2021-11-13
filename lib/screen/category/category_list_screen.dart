@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:invapp/models/category/category.model.dart';
 import 'package:invapp/services/category.service.dart';
 import 'package:invapp/utils/formatters/uppercase_text_formatter.dart';
-import 'package:invapp/widgets/alert.dart';
 import 'package:invapp/widgets/list_tile_widget.dart';
 
 class CategoryListScreen extends StatelessWidget {

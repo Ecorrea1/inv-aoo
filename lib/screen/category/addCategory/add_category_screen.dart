@@ -17,7 +17,7 @@ class AddCategoryScreen extends StatelessWidget {
   final _ubicationService     = new UbicationService();
   final _categoryService      = new CategoryService();
   
-  dynamic groupName           = '';
+  String groupName            = '';
   String categoryNew          = '';
   String ubicationNew         = '';
 
@@ -35,8 +35,8 @@ class AddCategoryScreen extends StatelessWidget {
 
         if ( !snapshot.hasData ) return Container( child: Center( child: CircularProgressIndicator() ), color: Colors.white );
         
-        List<String> pos    = [];
-        List<String> cate   = [];
+        List<String> pos  = [];
+        List<String> cate = [];
 
         final ubications  = snapshot.data[0];
         final categories  = snapshot.data[1];
@@ -57,9 +57,9 @@ class AddCategoryScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     CustomImput(
-                        icon: Icons.ac_unit,
-                        placeholder: 'Ingrese nombre',
-                        textController: nameController),
+                      icon: Icons.ac_unit,
+                      placeholder: 'Ingrese nombre',
+                      textController: nameController),
                     CustomImput(
                       icon: Icons.add_chart,
                       placeholder: 'Ingrese cantidad',
@@ -67,10 +67,10 @@ class AddCategoryScreen extends StatelessWidget {
                       keyboardType: TextInputType.number,
                     ),
                     CustomImput(
-                        icon: Icons.clear_all_sharp,
-                        placeholder: 'Ingrese precio',
-                        keyboardType: TextInputType.number,
-                        textController: priceController
+                      icon: Icons.clear_all_sharp,
+                      placeholder: 'Ingrese precio',
+                      keyboardType: TextInputType.number,
+                      textController: priceController
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -90,14 +90,14 @@ class AddCategoryScreen extends StatelessWidget {
                     ),
 
                     CustomImput(
-                        icon: Icons.clear_all_sharp,
-                        placeholder: '(Optional) Ingrese comentarios',
-                        keyboardType: TextInputType.multiline,
-                        textController: observationController
+                      icon: Icons.clear_all_sharp,
+                      placeholder: '(Optional) Ingrese comentarios',
+                      keyboardType: TextInputType.multiline,
+                      textController: observationController
                     ),
 
                     CustomButtom(
-                        title: 'Crear Producto', onPressed: _sendInformation)
+                      title: 'Crear Producto', onPressed: _sendInformation)
                   ],
                 ),
               ),
@@ -109,7 +109,7 @@ class AddCategoryScreen extends StatelessWidget {
   }
 
   _sendInformation() async {
-    // name, img, category, quantity, price, ubication, observations
+
     final data = {
       'name'          : nameController.text,
       'quantity'      : int.parse( quantityController.text ),
@@ -120,7 +120,7 @@ class AddCategoryScreen extends StatelessWidget {
       'observations'  : observationController.text
     };
 
-    bool resp = await _productService.addNewProduct( data: data );
+    final bool resp = await _productService.addNewProduct( data: data );
 
     if (resp) {
 
