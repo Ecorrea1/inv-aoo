@@ -1,4 +1,4 @@
-package com.example.invapp
+package com.ecorrea.invapp
 
 import io.flutter.embedding.android.FlutterActivity
 

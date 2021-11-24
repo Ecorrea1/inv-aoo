@@ -13,8 +13,8 @@ class LoginScreen extends StatelessWidget {
   // final String packageName = packageInfo.packageName;
   // final String buildNumber = packageInfo.buildNumber;
   // final String version = packageInfo.version;
-  final String version = '1.1.1';
-  final bool earlyAccess = true;
+  final String version = '1.1.2';
+  final bool earlyAccess = false;
   final bool inMaintenance = true;
   final bool isProduction = Enviroments.isProduction;
 
