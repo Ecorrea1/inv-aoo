@@ -4,8 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:invapp/models/product_group/product-group.model.dart';
 import 'package:invapp/models/product_group/product_group_response.dart';
+import 'package:invapp/models/user/user.model.dart';
+import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/product_group_service.dart';
 import 'package:invapp/widgets/list_tile_widget.dart';
+import 'package:provider/provider.dart';
 
 class ProductGroupAdminScreen extends StatelessWidget {
 
@@ -21,14 +24,23 @@ class ProductGroupAdminScreen extends StatelessWidget {
     _productGroupSvc.getContactGroup();
     final userEmail = ModalRoute.of(context).settings.arguments;
     // _productGroupSvc.getContactGroup(token: Provider.of<UserProvider>(context).token);
+
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final user = authService.user;
     return Scaffold(
       appBar: AppBar( title: Text( 'Grupo de Ministerio' ) ),
       body: SingleChildScrollView( child: listContactGroup( user: userEmail.toString() ) ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon( Icons.add ),
-        elevation: 1,
-        onPressed:() { addNewGroup( context, userEmail );}
-      ),
+      floatingActionButton: addGroupBottom(context, userEmail, user),
+    );
+  }
+
+  FloatingActionButton addGroupBottom(BuildContext context, Object userEmail, User user) {
+    if ( !user.role.privileges.createGroup ) return null;
+
+    return FloatingActionButton(
+      child: Icon( Icons.add ),
+      elevation: 1,
+      onPressed: () => addNewGroup( context, userEmail )
     );
   }
 

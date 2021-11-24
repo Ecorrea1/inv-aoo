@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:invapp/global/enviroment.global.dart';
 import 'package:invapp/screen/login/form/form_login.dart';
 import 'package:invapp/widgets/logo_login.dart';
 // import 'package:package_info/package_info.dart';
@@ -15,6 +16,7 @@ class LoginScreen extends StatelessWidget {
   final String version = '1.1.1';
   final bool earlyAccess = true;
   final bool inMaintenance = true;
+  final bool isProduction = Enviroments.isProduction;
 
   @override
   Widget build( BuildContext context ) {
@@ -29,7 +31,7 @@ class LoginScreen extends StatelessWidget {
             child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              LogoScreen( title: 'InvApp' ),
+              LogoScreen( title: isProduction ? 'InvApp' : 'InvApp Dev' ),
               FormLogin(),
               // LabelsLogin(
                 // route: 'register',

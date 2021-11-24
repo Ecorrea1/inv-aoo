@@ -19,7 +19,11 @@ class CategoryScreen extends StatelessWidget {
     
     return Scaffold(
       appBar: AppBar(
-        actions: [ IconButton( icon: Icon(Icons.delete, color: Colors.white), onPressed: () { _deleteInfo( context, category, user.email ); } ) ], 
+        actions: [ 
+          user.role.privileges.deleteCategory
+          ? IconButton( icon: Icon(Icons.delete, color: Colors.white), onPressed: () { _deleteInfo( context, category, user.email ); } )
+          : Container()
+        ], 
         elevation: 0.0 
       ),
       body: Container(
@@ -30,11 +34,15 @@ class CategoryScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: 
+      user.role.privileges.modifyCategory
+      ?FloatingActionButton(
         child: Icon( Icons.edit ),
         elevation: 1,
         onPressed: () => Navigator.pushNamed( context, 'update-category', arguments: category )
-      ),
+      )
+      : Container(),
+      
     );
   }
 

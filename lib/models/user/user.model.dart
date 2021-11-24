@@ -60,17 +60,20 @@ class Role {
   String name;
   List<MenuOption>  menuOptions;
   List<GroupOption> groupOptions;
+  Privileges privileges;
 
   Role({
     this.name,
     this.menuOptions,
-    this.groupOptions
+    this.groupOptions,
+    this.privileges
   });
 
   factory Role.fromJson( Map<String, dynamic> json ) => Role(
     name        : json["name"],
     menuOptions : List<MenuOption>.from( json["menuOptions"].map( ( x ) => MenuOption.fromJson( x ) ) ),
     groupOptions: List<GroupOption>.from( json["groupOptions"].map( ( x ) => GroupOption.fromJson( x ) ) ),
+    privileges  : Privileges.fromJson(json["privileges"])
   );
 
   Map<String, dynamic> toJson() => {
@@ -125,6 +128,78 @@ class GroupOption {
     "name": name,
     "icon": icon,
   };
+}
+
+class Privileges {
+    Privileges({
+        this.createProducts,
+        this.createUsers,
+        this.createGroup,
+        this.createCategory,
+        this.createUbications,
+        this.modifyProducts,
+        this.modifyUsers,
+        this.modifyGroup,
+        this.modifyCategory,
+        this.modifyUbications,
+        this.deleteProducts,
+        this.deleteUsers,
+        this.deleteGroup,
+        this.deleteCategory,
+        this.deleteUbications,
+    });
+
+    bool createProducts;
+    bool createUsers;
+    bool createGroup;
+    bool createCategory;
+    bool createUbications;
+    bool modifyProducts;
+    bool modifyUsers;
+    bool modifyGroup;
+    bool modifyCategory;
+    bool modifyUbications;
+    bool deleteProducts;
+    bool deleteUsers;
+    bool deleteGroup;
+    bool deleteCategory;
+    bool deleteUbications;
+
+    factory Privileges.fromJson(Map<String, dynamic> json) => Privileges(
+        createProducts: json["create-products"],
+        createUsers: json["create-users"],
+        createGroup: json["create-group"],
+        createCategory: json["create-group"],
+        createUbications: json["create-ubication"],
+        modifyProducts: json["modify-products"],
+        modifyUsers: json["modify-users"],
+        modifyGroup: json["modify-group"],
+        modifyCategory: json["modify-category"],
+        modifyUbications: json["modify-ubication"],
+        deleteProducts: json["delete-products"],
+        deleteUsers: json["delete-users"],
+        deleteGroup: json["delete-group"],
+        deleteCategory: json["delete-category"],
+        deleteUbications: json["delete-ubication"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "create-products": createProducts,
+        "create-users": createUsers,
+        "create-group": createGroup,
+        "create-category": createCategory,
+        "create-ubication": createUbications,
+        "modify-products": modifyProducts,
+        "modify-users": modifyUsers,
+        "modify-group": modifyGroup,
+        "modify-category": modifyCategory,
+        "modify-ubication": modifyUbications,
+        "delete-products": deleteProducts,
+        "delete-users": deleteUsers,
+        "delete-gruop": deleteGroup,
+        "delete-category": deleteCategory,
+        "delete-ubication": deleteUbications,
+    };
 }
 
 class Device {

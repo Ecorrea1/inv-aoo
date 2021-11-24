@@ -24,8 +24,12 @@ class UbicationScreen extends StatelessWidget {
     _addInfoController( name: ubication.name );
     
     return Scaffold(
-      appBar: AppBar( 
-        actions: [ IconButton( icon: Icon(Icons.delete, color: Colors.white), onPressed: () => _deleteInfo( context, ubication, user.email ) ) ],
+      appBar: AppBar(  
+        actions: [ 
+          user.role.privileges.deleteUbications
+          ? IconButton( icon: Icon(Icons.delete, color: Colors.white), onPressed: () => _deleteInfo( context, ubication, user.email ) )
+          : Container()
+        ],
         elevation: 0.0 ),
       body: Container(
         child: Column(
@@ -35,12 +39,14 @@ class UbicationScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon( Icons.edit ),
-        elevation: 1,
-        onPressed:() { addNewUbication( context, ubication, user.email );}
-        // onPressed: () => Navigator.pushNamed( context, 'update-ubication', arguments: ubication )
-      ),
+      floatingActionButton:
+       user.role.privileges.modifyUbications
+       ?FloatingActionButton(
+          child: Icon( Icons.edit ),
+          elevation: 1,
+          onPressed:() { addNewUbication( context, ubication, user.email );}
+        )
+      : Container(),
     );
   }
 

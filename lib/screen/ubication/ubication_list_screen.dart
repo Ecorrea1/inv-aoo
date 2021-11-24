@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:invapp/models/ubication/ubication.model.dart';
+import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/ubication.service.dart';
 import 'package:invapp/utils/formatters/uppercase_text_formatter.dart';
 import 'package:invapp/widgets/list_tile_widget.dart';
+import 'package:provider/provider.dart';
 
 class UbicationListScreen extends StatelessWidget {
 
@@ -14,7 +16,8 @@ class UbicationListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final user = authService.user;
     final userName = ModalRoute.of(context).settings.arguments;
 
     _ubicationSvc.getUbications();
@@ -34,11 +37,14 @@ class UbicationListScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: listUbication() ,
       ),
-       floatingActionButton: FloatingActionButton(
-        child: Icon( Icons.add ),
-        elevation: 1,
-        onPressed:() { addNewUbication( context, userName );}
-      ),
+       floatingActionButton:
+        user.role.privileges.createUbications 
+        ? FloatingActionButton(
+          child: Icon( Icons.add ),
+          elevation: 1,
+          onPressed:() { addNewUbication( context, userName );}
+        )
+        : Container(),
     );
   }
       StreamBuilder<List<Ubication>> listUbication() {

@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:invapp/models/category/category.model.dart';
+import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/category.service.dart';
 import 'package:invapp/utils/formatters/uppercase_text_formatter.dart';
 import 'package:invapp/widgets/list_tile_widget.dart';
+import 'package:provider/provider.dart';
 
 class CategoryListScreen extends StatelessWidget {
 
@@ -14,7 +16,8 @@ class CategoryListScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final user = authService.user;
     final userName = ModalRoute.of(context).settings.arguments;
 
     _categorySvc.getCategories();
@@ -34,11 +37,15 @@ class CategoryListScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: listHistorial(),
       ),
-       floatingActionButton: FloatingActionButton(
+       floatingActionButton:
+      user.role.privileges.createCategory ?
+        FloatingActionButton(
         child: Icon( Icons.add ),
         elevation: 1,
         onPressed:() { addNewCategory( context, userName );}
-      ),
+      )
+      : Container(),
+      
     );
   }
 
