@@ -104,7 +104,7 @@ class CategoryService {
   void applyFilter(String filter) {
     changeCategories(this
         ._allCategories
-        .where((categories) => categories.name.contains(filter.toLowerCase()))
+        .where((categories) => categories.name.toUpperCase().contains(filter.toUpperCase()))
         .toList());
   }
 

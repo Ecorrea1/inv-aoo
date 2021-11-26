@@ -23,15 +23,17 @@ class ProductScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(actions: [
-        (user.role.privileges.deleteProducts) 
-          ? IconButton( icon: Icon(Icons.delete, color: Colors.white), onPressed:() { _deleteInfo(context, product, user); } )
-          : Container()
-        ,
-        (user.role.privileges.modifyProducts) 
-          ? IconButton(icon: Icon(Icons.update_outlined, color: Colors.white), onPressed: () {_updateProduct(context, product, user);}) 
-          : Container(),
-        ], elevation: 0.0
-      ),
+        !!user.role.privileges.deleteProducts
+            ? IconButton(
+                icon: Icon(Icons.delete, color: Colors.white),
+                onPressed: () => _deleteInfo(context, product, user))
+            : Container(),
+        !!user.role.privileges.modifyProducts
+            ? IconButton(
+                icon: Icon(Icons.update_outlined, color: Colors.white),
+                onPressed: () => _updateProduct(context, product, user))
+            : Container(),
+      ], elevation: 0.0),
       body: Container(
         child: Column(
           children: <Widget>[
@@ -44,14 +46,15 @@ class ProductScreen extends StatelessWidget {
     );
   }
 
-  FloatingActionButton newMethod(User user, BuildContext context, Product product) {
-    if(!user.role.privileges.modifyProducts) return null;
+  FloatingActionButton newMethod(
+      User user, BuildContext context, Product product) {
+    if (!user.role.privileges.modifyProducts) return null;
 
     return FloatingActionButton(
         child: Icon(Icons.edit),
         elevation: 1,
-        onPressed: () => Navigator.pushNamed(context, 'update-product', arguments: product)
-    );
+        onPressed: () =>
+            Navigator.pushNamed(context, 'update-product', arguments: product));
   }
 
   Widget _productHeader(context, size, product) {
@@ -125,7 +128,6 @@ class ProductScreen extends StatelessWidget {
   }
 
   _updateProduct(context, Product product, User user) async {
-    if (user.role.privileges.modifyProducts) return null;
 
     if (Platform.isAndroid) {
       // Android
@@ -207,12 +209,9 @@ class ProductScreen extends StatelessWidget {
   }
 
   _updateInfo(context, Product product, User user) async {
-    if (quantityController.text.isEmpty || nameController.text.isEmpty)
-      return showAlert(
-          context, 'Prestar Producto', 'Ingrese algun dato por favor ');
+    if (quantityController.text.isEmpty || nameController.text.isEmpty) return showAlert(context, 'Prestar Producto', 'Ingrese algun dato por favor ');
 
-    String obs =
-        '${user.name} presto este item a ${nameController.text} ${quantityController.text} de ${product.quantity}  del grupo: ${product.group}, categoria: ${product.category} /  Datos de Observacion :  ${product.observations} ';
+    String obs = '${user.name} presto este item a ${nameController.text} ${quantityController.text} de ${product.quantity}  del grupo: ${product.group}, categoria: ${product.category} /  Datos de Observacion :  ${product.observations} ';
     int cant = product.quantity - int.parse(quantityController.text);
 
     final data = {
@@ -234,9 +233,9 @@ class ProductScreen extends StatelessWidget {
     }
   }
 
-   _deleteInfo(context, Product product, User user) async {
-    if (user.role.privileges.createUsers) return null;
-    final delete = await _productSVC.deleteProduct(uid: product.id, user: user.email);
+  _deleteInfo(context, Product product, User user) async {
+    final delete =
+        await _productSVC.deleteProduct(uid: product.id, user: user.email);
 
     if (delete) {
       bool resp = await showAlert(

@@ -45,8 +45,8 @@ class Config {
   
   };
 
-  double versionActualStore( String platform ) => ( platform == 'android' ) 
-  ?  double.parse( this.androidVersion.trim().replaceAll(".", "") ) 
-  :  double.parse( this.iosVersion.trim().replaceAll(".", "") );
+   int versionActualStore(String platform) => (platform == 'android') ?  
+   int.parse(this.androidVersion.trim().replaceAll(".", "")) :  
+   int.parse(this.iosVersion.trim().replaceAll(".", ""));
   
 }

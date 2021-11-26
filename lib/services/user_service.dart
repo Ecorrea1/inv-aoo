@@ -17,7 +17,8 @@ class UserService {
 
   Future<UserResponse> getUsers() async {
     try {
-      final response = await http.get(Uri.parse('${Enviroments.apiUrl}/login/users'),
+      final response = await http.get(
+          Uri.parse('${Enviroments.apiUrl}/login/users'),
           headers: {'Content-Type': 'application/json'});
       if (response.statusCode == 200) {
         final userResp = UserResponse.fromJson(json.decode(response.body));
@@ -34,40 +35,31 @@ class UserService {
     }
   }
 
-   Future <bool> updateUser( { @required String uid, final data }  ) async {
-
-    try{
-
-      final resp = await http.put( Uri.parse('${ Enviroments.apiUrl }/ubication/new'), 
-      body: jsonEncode( data ), 
-      headers: { 'Content-Type':'application/json' }
-      );
-        if( resp.statusCode == 200 ) {
-          final data = addUbicationResponseModelFromJson(  resp.body );
-
-            if ( data.ok ) {
-              print( data.msg );
-            }
-
-          return true;
-        }
+  Future<bool> updateUser({@required String uid, final data}) async {
+    try {
+      final resp = await http.put(
+          Uri.parse('${Enviroments.apiUrl}/ubication/new'),
+          body: jsonEncode(data),
+          headers: {'Content-Type': 'application/json'});
+      if (resp.statusCode == 200) {
+        final data = addUbicationResponseModelFromJson(resp.body);
+        if (data.ok) print(data.msg);
+        return true;
+      }
 
       return false;
-
-    } catch( error ){
-
-      print( error );
+    } catch (error) {
+      print(error);
       return false;
-
     }
   }
 
   Future<bool> deleteUser({@required String uid, String user}) async {
     try {
-      final resp = await http.post(Uri.parse('${Enviroments.apiUrl}/login/$uid'),
+      final resp = await http.post(
+          Uri.parse('${Enviroments.apiUrl}/login/$uid'),
           body: jsonEncode({'user': user}),
-          headers: {'Content-Type': 'application/json'}
-      );
+          headers: {'Content-Type': 'application/json'});
       if (resp.statusCode == 200) {
         final respBody = jsonDecode(resp.body);
         print(respBody['msg']);

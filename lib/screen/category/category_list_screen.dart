@@ -38,7 +38,7 @@ class CategoryListScreen extends StatelessWidget {
         child: listHistorial(),
       ),
        floatingActionButton:
-      user.role.privileges.createCategory ?
+      !!user.role.privileges.createCategory ?
         FloatingActionButton(
         child: Icon( Icons.add ),
         elevation: 1,

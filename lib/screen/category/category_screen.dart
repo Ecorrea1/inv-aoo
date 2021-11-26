@@ -20,7 +20,7 @@ class CategoryScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [ 
-          user.role.privileges.deleteCategory
+          !!user.role.privileges.deleteCategory
           ? IconButton( icon: Icon(Icons.delete, color: Colors.white), onPressed: () { _deleteInfo( context, category, user.email ); } )
           : Container()
         ], 

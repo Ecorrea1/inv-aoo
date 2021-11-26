@@ -26,7 +26,7 @@ class UbicationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(  
         actions: [ 
-          user.role.privileges.deleteUbications
+          !!user.role.privileges.deleteUbications
           ? IconButton( icon: Icon(Icons.delete, color: Colors.white), onPressed: () => _deleteInfo( context, ubication, user.email ) )
           : Container()
         ],

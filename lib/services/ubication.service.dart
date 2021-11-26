@@ -104,7 +104,7 @@ class UbicationService {
   void applyFilter(String filter) {
     changeUbications(this
         ._allubications
-        .where((ubications) => ubications.name.contains(filter.toLowerCase()))
+        .where((ubications) => ubications.name.toUpperCase().contains(filter.toUpperCase()))
         .toList());
   }
 
