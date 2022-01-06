@@ -6,6 +6,7 @@ import 'package:invapp/models/product/product_model.dart';
 import 'package:invapp/models/user/user.model.dart';
 import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/product.service.dart';
+import 'package:invapp/utils/icons_string_util.dart';
 import 'package:invapp/widgets/alert.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +31,7 @@ class ProductScreen extends StatelessWidget {
             : Container(),
         !!user.role.privileges.modifyProducts
             ? IconButton(
-                icon: Icon(Icons.update_outlined, color: Colors.white),
+                icon: Icon( getIcon('FAtruckLoading'), color: Colors.white),
                 onPressed: () => _updateProduct(context, product, user))
             : Container(),
       ], elevation: 0.0),
@@ -53,8 +54,7 @@ class ProductScreen extends StatelessWidget {
     return FloatingActionButton(
         child: Icon(Icons.edit),
         elevation: 1,
-        onPressed: () =>
-            Navigator.pushNamed(context, 'update-product', arguments: product));
+        onPressed: () => Navigator.pushNamed(context, 'update-product', arguments: product));
   }
 
   Widget _productHeader(context, size, product) {
@@ -84,7 +84,7 @@ class ProductScreen extends StatelessWidget {
           _productItemData(title: 'Ubicacion', data: product.ubication),
           _productItemData(title: 'Grupo', data: product.group),
           _productItemData(title: 'Precio', data: product.price.toString()),
-          _productItemData(title: 'Observacion', data: product.observations),
+          _productItemData(title: 'Observacion', data: ( product.observations.length >= 33 ) ? product.observations.substring(0, 34).trim() + '...' : product.observations.trim()),
           _productItemData(
               title: 'Activo',
               data: product.active.toString(),
@@ -159,7 +159,7 @@ class ProductScreen extends StatelessWidget {
                       // prefixIcon: Icon( icon ),
                       // focusedBorder: InputBorder.none,
                       // border: InputBorder.none,
-                      hintText: 'Ingresa '),
+                      hintText: 'Ingresa'),
                 ),
               ],
             ),
@@ -188,7 +188,7 @@ class ProductScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 3),
                 CupertinoTextField(
-                  placeholder: 'Ingresa nombre  prestado',
+                  placeholder: 'Ingresa nombre prestado',
                   controller: nameController,
                   textCapitalization: TextCapitalization.sentences,
                 ),
@@ -223,27 +223,22 @@ class ProductScreen extends StatelessWidget {
     };
 
     bool resp = await _productSVC.updateProduct(uid: product.id, data: data);
-
-    if (resp) {
-      return showAlert(
-          context, 'Actualizar Producto', 'El item se actualizo correctamente');
-    } else {
-      return showAlert(context, 'Actualizar Producto',
-          'Hubieron Problemas con la actualizacion del item');
-    }
+    print('respuesta: $resp');
+    if (!resp || resp== null) return showAlert(context, 'Actualizar Producto','Hubieron Problemas con la actualizacion del item');
+    showAlert(context, 'Actualizar Producto', 'El item se actualizo correctamente');
+    Navigator.pop(context);
+    
   }
 
   _deleteInfo(context, Product product, User user) async {
-    final delete =
-        await _productSVC.deleteProduct(uid: product.id, user: user.email);
+    final delete = await _productSVC.deleteProduct(uid: product.id, user: user.email);
 
     if (delete) {
-      bool resp = await showAlert(
-          context, 'Eliminacion de producto', 'Eliminacion exitosa');
+      bool resp = await showAlert(context, 'Eliminacion de producto', 'Eliminacion exitosa');
       print(resp);
+      Navigator.pop(context);
     } else {
       showAlert(context, 'Eliminacion de producto', 'Tuvimos un problema');
     }
-    // Navigator.pop(context);
   }
 }
