@@ -3,6 +3,7 @@ class Historic {
   String id;
   String userName;
   String action;
+  String description;
   DateTime createdAt;
 
 
@@ -10,6 +11,7 @@ class Historic {
     this.id,
     this.userName,
     this.action,
+    this.description,
     this.createdAt
   });
 
@@ -17,6 +19,7 @@ class Historic {
     id        : json['uid'],
     userName  : json['userName'],
     action    : json['action'],
+    description    : json['description'],
     createdAt : DateTime.parse(json['createdAt'])
   );
   
@@ -24,6 +27,7 @@ class Historic {
     'uid'       : id,
     'userName'  : userName,
     'action'    : action,
+    'description'    : description,
     'createdAt' : createdAt..toIso8601String()
   };
 }

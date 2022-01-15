@@ -122,7 +122,7 @@ class UbicationScreen extends StatelessWidget {
             ),
             actions: <Widget>[
               MaterialButton(
-                child: Text( 'Add' ),
+                child: Text( 'Agregar' ),
                 elevation: 5,
                 textColor: Colors.blue,
                 onPressed:() => _sendInformation( context, ubication, user )
@@ -145,7 +145,7 @@ class UbicationScreen extends StatelessWidget {
           actions: <Widget>[
             CupertinoDialogAction(
               isDefaultAction: true,
-              child: Text( 'Add' ),
+              child: Text( 'Agregar' ),
               onPressed:() => _sendInformation(_, ubication, user )
             ),
             CupertinoDialogAction(

@@ -89,7 +89,7 @@ class ProductGroupAdminScreen extends StatelessWidget {
             ),
             actions: <Widget>[
               MaterialButton(
-                child: Text( 'Add' ),
+                child: Text( 'Agregar' ),
                 elevation: 5,
                 textColor: Colors.blue,
                 onPressed:() => _sendInformation( context, userName )

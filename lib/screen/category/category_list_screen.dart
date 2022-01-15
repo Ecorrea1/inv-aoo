@@ -92,7 +92,7 @@ class CategoryListScreen extends StatelessWidget {
             ),
             actions: <Widget>[
               MaterialButton(
-                child: Text( 'Add' ),
+                child: Text( 'Agregar' ),
                 elevation: 5,
                 textColor: Colors.blue,
                 onPressed:() => _sendInformation( context, userName )
@@ -115,7 +115,7 @@ class CategoryListScreen extends StatelessWidget {
           actions: <Widget>[
             CupertinoDialogAction(
               isDefaultAction: true,
-              child: Text( 'Add' ),
+              child: Text( 'Agregar' ),
               onPressed:() => _sendInformation(_, userName)
             ),
             CupertinoDialogAction(
