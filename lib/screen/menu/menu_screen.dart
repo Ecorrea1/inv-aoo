@@ -94,7 +94,7 @@ class MainMenuScreen extends StatelessWidget {
             alignment: Alignment.centerRight,
             width: MediaQuery.of( context ).size.width * 0.75,
             child: Text(
-              'INVAPP 2021 Copyright © Todos los derechos reservados',
+              'INVAPP 2022 Copyright © Todos los derechos reservados',
               style: CustomTheme.footText.copyWith( color: Colors.grey ),
             ),
           ),

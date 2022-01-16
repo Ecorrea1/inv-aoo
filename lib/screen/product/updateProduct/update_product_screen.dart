@@ -67,6 +67,9 @@ class UpdateProductScreen extends StatelessWidget {
         for ( var item in position ) { pos.add( item.name );  }
         for ( var item in category ) { cate.add( item.name ); }
 
+        int defaultPosition = pos.indexOf(product.ubication) != -1 ? pos.indexOf(product.ubication) : 0;
+        int defaultCategory = cate.indexOf(product.category) != -1 ? cate.indexOf(product.category) : 0;
+
         return Scaffold(
           appBar: AppBar(
             title: Text( product.name.toString() ),
@@ -116,6 +119,7 @@ class UpdateProductScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: DropdownCustom( 
+                        defaultItem: defaultCategory,
                         items: cate,
                         outlined: true,
                         center: true,
@@ -126,6 +130,7 @@ class UpdateProductScreen extends StatelessWidget {
                      Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: DropdownCustom(
+                        defaultItem: defaultPosition,
                         items: pos, 
                         outlined: true,
                         center: true,
