@@ -62,6 +62,11 @@ class AddProductScreen extends StatelessWidget {
         for ( var item in category ) { cate.add( item.name ); }
         for ( var item in group ) { grou.add( item.name ); }
 
+        cate.remove('Eliminados');
+        grou.remove('Eliminados');
+        grou.remove('Prestamos');
+        grou.remove('Todos');
+
         return Scaffold(
           appBar: AppBar(
             title: Text( groupName ),
@@ -99,6 +104,7 @@ class AddProductScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: DropdownCustom( 
                         items: grou,
+                        defaultItem: 0,
                         outlined: true,
                         onChange: ( option ) => groupNew = option 
                       ),
@@ -106,7 +112,8 @@ class AddProductScreen extends StatelessWidget {
                     Text( 'Categoría' ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: DropdownCustom( 
+                      child: DropdownCustom(
+                        defaultItem: 0,
                         items: cate,
                         outlined: true,
                         onChange: ( option ) => categoryNew = option 

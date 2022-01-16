@@ -27,11 +27,16 @@ class ProductScreen extends StatelessWidget {
         (!!user.role.privileges.deleteProducts && product.group != 'Eliminados')
             ? IconButton(
                 icon: Icon(Icons.delete, color: Colors.white),
-                onPressed: () => _deleteInfo(context, product, user))
+                onPressed: () => _showAlertDelete(
+                    context,
+                    'Eliminacion de item',
+                    'Esta seguro que quiere borrar este item?',
+                    product,
+                    user))
             : Container(),
         !!user.role.privileges.modifyProducts && product.group != 'Prestamos'
             ? IconButton(
-                icon: Icon( getIcon('FAtruckLoading'), color: Colors.white),
+                icon: Icon(getIcon('FAtruckLoading'), color: Colors.white),
                 onPressed: () => _updateProduct(context, product, user))
             : Container(),
       ], elevation: 0.0),
@@ -54,7 +59,8 @@ class ProductScreen extends StatelessWidget {
     return FloatingActionButton(
         child: Icon(Icons.edit),
         elevation: 1,
-        onPressed: () => Navigator.pushNamed(context, 'update-product', arguments: product));
+        onPressed: () =>
+            Navigator.pushNamed(context, 'update-product', arguments: product));
   }
 
   Widget _productHeader(context, size, product) {
@@ -84,7 +90,11 @@ class ProductScreen extends StatelessWidget {
           _productItemData(title: 'Ubicacion', data: product.ubication),
           _productItemData(title: 'Grupo', data: product.group),
           _productItemData(title: 'Precio', data: product.price.toString()),
-          _productItemData(title: 'Observacion', data: ( product.observations.length >= 33 ) ? product.observations.substring(0, 34).trim() + '...' : product.observations.trim()),
+          _productItemData(
+              title: 'Observacion',
+              data: (product.observations.length >= 33)
+                  ? product.observations.substring(0, 34).trim() + '...'
+                  : product.observations.trim()),
           _productItemData(
               title: 'Activo',
               data: product.active.toString(),
@@ -128,7 +138,6 @@ class ProductScreen extends StatelessWidget {
   }
 
   _updateProduct(context, Product product, User user) async {
-
     if (Platform.isAndroid) {
       // Android
       return showDialog(
@@ -209,9 +218,12 @@ class ProductScreen extends StatelessWidget {
   }
 
   _updateInfo(context, Product product, User user) async {
-    if (quantityController.text.isEmpty || nameController.text.isEmpty) return showAlert(context, 'Prestar Producto', 'Ingrese algun dato por favor ');
+    if (quantityController.text.isEmpty || nameController.text.isEmpty)
+      return showAlert(
+          context, 'Prestar Producto', 'Ingrese algun dato por favor ');
 
-    String obs = '${user.name} presto este item a ${nameController.text} ${quantityController.text} de ${product.quantity}  del grupo: ${product.group}, categoria: ${product.category} /  Datos de Observacion :  ${product.observations} ';
+    String obs =
+        '${user.name} presto este item a ${nameController.text} ${quantityController.text} de ${product.quantity}  del grupo: ${product.group}, categoria: ${product.category} /  Datos de Observacion :  ${product.observations} ';
     int cant = product.quantity - int.parse(quantityController.text);
 
     final data = {
@@ -224,24 +236,53 @@ class ProductScreen extends StatelessWidget {
 
     bool resp = await _productSVC.updateProduct(uid: product.id, data: data);
     print('respuesta: $resp');
-    if (!resp || resp== null) return showAlert(context, 'Actualizar Producto','Hubieron Problemas con la actualizacion del item');
-    showAlert(context, 'Actualizar Producto', 'El item se actualizo correctamente');
+    if (!resp || resp == null)
+      return showAlert(context, 'Actualizar Producto',
+          'Hubieron Problemas con la actualizacion del item');
+    showAlert(
+        context, 'Actualizar Producto', 'El item se actualizo correctamente');
     Navigator.pop(context);
-    
   }
 
-  _deleteInfo(context, Product product, User user) async {
-    
+  _deleteInfo(context, Product product, User user, resp) async {
+
+    if (!resp) return;
     final delete = await _productSVC.deleteProduct(uid: product.id, user: user.email);
+    if (delete && resp) {
 
-    if (delete) {
-      bool resp = await showAlert(context, 'Eliminacion de producto', 'Eliminacion exitosa');
-      print(resp);
+      showAlert(context, 'Eliminacion de item', 'Eliminacion exitosa');
       Navigator.pop(context);
       Navigator.pop(context);
-
+    
     } else {
-      showAlert(context, 'Eliminacion de producto', 'Tuvimos un problema');
+      showAlert(context, 'Eliminacion de item', 'Tuvimos un problema, Intenta de nuevo');
     }
+  }
+
+  _showAlertDelete(
+      context, String title, String subtitle, Product product, User user) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text(title),
+              content: Text(subtitle),
+              actions: [
+                MaterialButton(
+                  child: Text('OK'),
+                  elevation: 5,
+                  textColor: Colors.blue,
+                  onPressed: () => Navigator.pop(context, true),
+                ),
+                MaterialButton(
+                  child: Text('Cancel'),
+                  elevation: 5,
+                  textColor: Colors.blue,
+                  onPressed: () => Navigator.pop(context, false),
+                )
+              ],
+            )).then((value) {
+      _deleteInfo(context, product, user, value);
+    });
   }
 }
