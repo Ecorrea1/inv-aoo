@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/category.service.dart';
 import 'package:invapp/services/product.service.dart';
+import 'package:invapp/services/product_group_service.dart';
 import 'package:invapp/services/ubication.service.dart';
 import 'package:invapp/widgets/alert.dart';
 import 'package:invapp/widgets/buttons.dart';
@@ -16,13 +17,15 @@ class AddProductScreen extends StatelessWidget {
   final priceController       = TextEditingController();
   final observationController = TextEditingController();
   
-  final _productService       = new ProductService();
+  final _productService       = ProductService();
   final _ubicationService     = new UbicationService();
   final _categoryService      = new CategoryService();
+  final _groupService         = new ProductGroupService();
   
   String groupName            = '';
   String categoryNew          = '';
   String ubicationNew         = '';
+  String groupNew             = '';
 
   @override
   Widget build( BuildContext context ) {
@@ -36,7 +39,8 @@ class AddProductScreen extends StatelessWidget {
     return FutureBuilder(
       future: Future.wait([
         _ubicationService.getUbications(),
-        _categoryService.getCategories()
+        _categoryService.getCategories(),
+        _groupService.getContactGroup(),
       ]),
       builder: ( BuildContext context, AsyncSnapshot snapshot ) {
 
@@ -44,15 +48,19 @@ class AddProductScreen extends StatelessWidget {
         
         List<String> pos  = [];
         List<String> cate = [];
+        List<String> grou = [];
 
         final ubications  = snapshot.data[0];
         final categories  = snapshot.data[1];
+        final groups  = snapshot.data[2];
 
-        final position    = ubications.data;
-        final category    = categories.data;
+        final position = ubications.data;
+        final category = categories.data;
+        final group    = groups.data; 
 
         for ( var item in position ) { pos.add(  item.name ); }
         for ( var item in category ) { cate.add( item.name ); }
+        for ( var item in group ) { grou.add( item.name ); }
 
         return Scaffold(
           appBar: AppBar(
@@ -86,6 +94,16 @@ class AddProductScreen extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       textController: priceController
                     ),
+                    if(groupName == 'Todos') Text( 'Grupo' ),
+                    if(groupName == 'Todos') Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DropdownCustom( 
+                        items: grou,
+                        outlined: true,
+                        onChange: ( option ) => groupNew = option 
+                      ),
+                    ),
+                    Text( 'Categoría' ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DropdownCustom( 
@@ -94,6 +112,7 @@ class AddProductScreen extends StatelessWidget {
                         onChange: ( option ) => categoryNew = option 
                       ),
                     ),
+                    Text( 'Ubicación' ),
                      Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DropdownCustom( 
@@ -127,11 +146,9 @@ class AddProductScreen extends StatelessWidget {
 
   _sendInformation( context ,String user ) async {
 
-    if ( nameController.text.isEmpty || quantityController.text.isEmpty || priceController.text.isEmpty ) {
-
-      return showAlert(context, 'Agregar Producto', 'Ingrese algun dato por favor ');
-      
-    }
+    if ( nameController.text.isEmpty || quantityController.text.isEmpty || priceController.text.isEmpty || categoryNew.isEmpty || ubicationNew.isEmpty ) return showAlert(context, 'Agregar Producto', 'Ingrese algun dato por favor ');
+    if ( groupName == 'Todos' && groupNew.isEmpty ) return showAlert(context, 'Agregar Producto', 'Ingrese Grupo por favor');
+    if(groupName == 'Todos') groupName = groupNew;
 
     final data = {
 
@@ -145,6 +162,8 @@ class AddProductScreen extends StatelessWidget {
       'user'          : user
     
     };
+
+    print( data );
 
     final bool resp = await _productService.addNewProduct( data: data );
 
@@ -166,8 +185,6 @@ class AddProductScreen extends StatelessWidget {
     categoryNew                = '';
     ubicationNew               = '';
     observationController.text = '';
-
-    print(groupName);
 
   }
 }

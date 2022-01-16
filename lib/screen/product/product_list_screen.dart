@@ -50,7 +50,6 @@ class ProductListScreen extends StatelessWidget {
   }
 
   FloatingActionButton addProduct(List<String> dataGroup, BuildContext context, User user) {
-    if (dataGroup[0].toString() == 'Todos') return null;
     if (dataGroup[0].toString() == 'Prestamos') return null;
     if (dataGroup[0].toString() == 'Eliminados') return null;
     if (!user.role.privileges.createProducts) return null;
@@ -65,8 +64,8 @@ class ProductListScreen extends StatelessWidget {
     final refresh = await _productService.getProductList(group: data);
 
     (refresh.ok)
-        ? print('Refresco correcto')
-        : print('Hubo algun problema al recargar');
+      ? print('Refresco correcto')
+      : print('Hubo algun problema al recargar');
   }
 }
 
@@ -74,22 +73,13 @@ Widget _productList(BuildContext context, ProductService service) {
   return StreamBuilder<List<Product>>(
       stream: service.productStream,
       builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
-        if (!snapshot.hasData)
-          return Center(child: CircularProgressIndicator());
-        if (snapshot.data.isEmpty)
-          return Center(
-              child: Text(
-            'No hay coincidencias',
-            style: TextStyle(fontSize: 20),
-          ));
+        if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
+        if (snapshot.data.isEmpty) return Center( child: Text('No hay coincidencias', style: TextStyle(fontSize: 20),));
 
         List<Product> listStream = snapshot.data;
         List<Widget> listProduct = [];
 
-        for (final product in listStream) {
-          listProduct.add(_product(context, product));
-        }
-
+        for (final product in listStream)  listProduct.add(_product(context, product));
         return Wrap(alignment: WrapAlignment.start, children: listProduct);
       });
 }
@@ -103,8 +93,6 @@ Widget _product(BuildContext context, Product product) {
       tileColor: (product.active) ? Colors.white : Colors.grey,
       title: Text(product.name),
       subtitle: Text(product.category),
-      trailing:
-          Text(product.quantity.toString(), style: TextStyle(fontSize: 20)),
-      onTap: () =>
-          Navigator.pushNamed(context, 'product-detail', arguments: product));
+      trailing: Text(product.quantity.toString(), style: TextStyle(fontSize: 20)),
+      onTap: () => Navigator.pushNamed(context, 'product-detail', arguments: product));
 }

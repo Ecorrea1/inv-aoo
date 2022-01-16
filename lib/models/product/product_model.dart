@@ -33,9 +33,9 @@ class Product {
     id           : json["uid"],
     name         : json["name"],
     category     : json["category"],
-    group        : json["group"]        == null ? null : json["group"],
-    observations : json["observations"] == null ? null : json["observations"],
-    img          : json["img"]          == null ? null : json["img"],
+    group        : json["group"] == null ? null : json["group"],
+    observations : json["observations"] == null ? '' : json["observations"],
+    img          : json["img"] == null ? null : json["img"],
   
   );
 

@@ -24,12 +24,12 @@ class ProductScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(actions: [
-        !!user.role.privileges.deleteProducts
+        (!!user.role.privileges.deleteProducts && product.group != 'Eliminados')
             ? IconButton(
                 icon: Icon(Icons.delete, color: Colors.white),
                 onPressed: () => _deleteInfo(context, product, user))
             : Container(),
-        !!user.role.privileges.modifyProducts
+        !!user.role.privileges.modifyProducts && product.group != 'Prestamos'
             ? IconButton(
                 icon: Icon( getIcon('FAtruckLoading'), color: Colors.white),
                 onPressed: () => _updateProduct(context, product, user))
@@ -231,12 +231,15 @@ class ProductScreen extends StatelessWidget {
   }
 
   _deleteInfo(context, Product product, User user) async {
+    
     final delete = await _productSVC.deleteProduct(uid: product.id, user: user.email);
 
     if (delete) {
       bool resp = await showAlert(context, 'Eliminacion de producto', 'Eliminacion exitosa');
       print(resp);
       Navigator.pop(context);
+      Navigator.pop(context);
+
     } else {
       showAlert(context, 'Eliminacion de producto', 'Tuvimos un problema');
     }
