@@ -35,19 +35,21 @@ class UserService {
     }
   }
 
-  Future<bool> updateUser({@required String uid, final data}) async {
+  Future <bool>updateUser({@required String uid, final data}) async {
     try {
-      final resp = await http.put(
-          Uri.parse('${Enviroments.apiUrl}/ubication/new'),
-          body: jsonEncode(data),
-          headers: {'Content-Type': 'application/json'});
+
+      final resp = await http.put(Uri.parse('${Enviroments.apiUrl}/login/$uid'),
+        body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
       if (resp.statusCode == 200) {
-        final data = addUbicationResponseModelFromJson(resp.body);
-        if (data.ok) print(data.msg);
+        final respBody = jsonDecode(resp.body);
+        print(respBody['msg']);
         return true;
+      } else {
+        final respBody = jsonDecode(resp.body);
+        print(respBody['msg']);
+        return false;
       }
 
-      return false;
     } catch (error) {
       print(error);
       return false;

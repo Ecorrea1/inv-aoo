@@ -9,38 +9,38 @@ import 'package:provider/provider.dart';
 class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    
-
     return Scaffold(
-      backgroundColor: Color( 0xffF2F2F2 ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Container(
-            height: MediaQuery.of( context ).size.height * 0.9,
-            child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              LogoScreen( title: 'Crear cuenta',),
-              _FormLogin(),
-              // LabelsLogin(
-              //   route: 'login',
-              //   title: 'Tienes tu cuenta',
-              //   subtitle: 'Ingresa tu cuenta',
-              // ),
-              // Text('Terminos de Uso', style: TextStyle( fontWeight: FontWeight.w300 ),)
-              GestureDetector(
-                child: Text('Volver', style: TextStyle( fontWeight: FontWeight.w300 ),),
-                onTap: () => Navigator.pop(context),
-
-              )
-            ],
+        backgroundColor: Color(0xffF2F2F2),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.9,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  LogoScreen(
+                    title: 'Crear cuenta',
+                  ),
+                  _FormLogin(),
+                  // LabelsLogin(
+                  //   route: 'login',
+                  //   title: 'Tienes tu cuenta',
+                  //   subtitle: 'Ingresa tu cuenta',
+                  // ),
+                  // Text('Terminos de Uso', style: TextStyle( fontWeight: FontWeight.w300 ),)
+                  GestureDetector(
+                    child: Text(
+                      'Volver',
+                      style: TextStyle(fontWeight: FontWeight.w300),
+                    ),
+                    onTap: () => Navigator.pop(context),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      )
-    );
+        ));
   }
 }
 
@@ -50,18 +50,19 @@ class _FormLogin extends StatefulWidget {
 }
 
 class _FormLoginState extends State<_FormLogin> {
-
-  final nameController  = TextEditingController();
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
-  final passController  = TextEditingController();
+  final passController = TextEditingController();
 
   @override
-  Widget build( BuildContext context ) {
-    final authService   = Provider.of<AuthService>( context );
-    final userEmail     = ModalRoute.of(context).settings.arguments;
+  Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final user = authService.user;
+    print(user);
+    final userEmail = ModalRoute.of(context).settings.arguments;
     return Container(
-      margin: EdgeInsets.only( top: 5 ),
-      padding: EdgeInsets.symmetric( horizontal: 50 ),
+      margin: EdgeInsets.only(top: 5),
+      padding: EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: [
           CustomImput(
@@ -69,7 +70,7 @@ class _FormLoginState extends State<_FormLogin> {
             placeholder: 'Nombre',
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
-            textController: nameController, 
+            textController: nameController,
           ),
           CustomImput(
             icon: Icons.email_outlined,
@@ -84,20 +85,24 @@ class _FormLoginState extends State<_FormLogin> {
             isPass: true,
           ),
           CustomButtom(
-            title: 'Crear Cuenta', 
-            onPressed: authService.authentify ? null : () async {
-              FocusScope.of( context ).unfocus();
-              final registerOk = await authService.register( name :nameController.text.trim(), email: emailController.text.trim(), pass: passController.text.trim(), user :userEmail );
-              if( registerOk != null ) {
-
-                // showAlert( context, 'Registro Exitoso', registerOk.toString() );
-                Navigator.pushReplacementNamed( context, 'menu' ); 
-              
-              } else {
-                showAlert( context, 'Registro incorrecto', registerOk.toString() );
-              }
-            }
-          ),
+              title: 'Crear Cuenta',
+              onPressed: authService.authentify
+                  ? null
+                  : () async {
+                      FocusScope.of(context).unfocus();
+                      final registerOk = await authService.register(
+                          name: nameController.text.trim(),
+                          email: emailController.text.trim(),
+                          pass: passController.text.trim(),
+                          user: userEmail);
+                      if (registerOk != null) {
+                        // showAlert( context, 'Registro Exitoso', registerOk.toString() );
+                        Navigator.pushReplacementNamed(context, 'menu');
+                      } else {
+                        showAlert(context, 'Registro incorrecto',
+                            registerOk.toString());
+                      }
+                    }),
         ],
       ),
     );

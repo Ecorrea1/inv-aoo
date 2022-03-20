@@ -39,6 +39,17 @@ class MainMenuScreen extends StatelessWidget {
                   child: Image(
                     width: 70.0,
                     image: AssetImage( 'assets/logo-iglesia.png' ),
+                    color: Colors.white,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only( bottom: 10.0 ),
+                  child: IconButton(
+                    icon: Icon( Icons.edit, size: 30, color: Colors.white,),
+                    // iconSize: 30.0,
+                    onPressed: () {
+                      Navigator.pushNamed( context, 'user-update' );
+                    },
                   ),
                 ),
               ],

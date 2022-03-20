@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:invapp/global/enviroment.global.dart';
 import 'package:invapp/models/config/config_model.dart';
 import 'package:invapp/screen/login/form/form_login.dart';
-import 'package:invapp/services/config_service.dart';
 import 'package:invapp/widgets/logo_login.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,7 +17,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String version = '';
   final bool earlyAccess = false;
-  final bool inMaintenance = true;
+  final bool inMaintenance = false;
   final bool isProduction = Enviroments.isProduction;
 
   @override

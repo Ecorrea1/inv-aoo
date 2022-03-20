@@ -19,6 +19,7 @@ import 'package:invapp/screen/status/status_screen.dart';
 import 'package:invapp/screen/ubication/addUbication/add_ubication_screen.dart';
 import 'package:invapp/screen/ubication/ubication_list_screen.dart';
 import 'package:invapp/screen/ubication/ubication_screen.dart';
+import 'package:invapp/screen/user/userUpdate/user_update_screen.dart';
 import 'package:invapp/screen/user/user_list_screen.dart';
 import 'package:invapp/screen/user/user_screen.dart';
 
@@ -46,6 +47,7 @@ final Map<String, Widget Function(BuildContext)>appRoutes  = {
   'update-ubication':(_) => AddUbicationScreen(),
   'user'            :(_) => UserListScreen(),
   'user-detail'     :(_) => UserScreen(),
+  'user-update'     :(_) => UserUpdateScreen(),
   // 'roles'           :(_) => RoleScreen(),
   // 'role-detail'     :(_) => RoleScreen()
 };
