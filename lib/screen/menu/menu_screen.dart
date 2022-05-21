@@ -69,13 +69,12 @@ class MainMenuScreen extends StatelessWidget {
           Container(
             alignment: Alignment.topCenter,
             padding: EdgeInsets.only( top: 120, bottom: 50 ),
-            width: MediaQuery.of( context ).size.width * 0.75,
+            width: MediaQuery.of( context ).size.width * 0.72,
             child: Stack(
               children: [
                 Align(
                   alignment: Alignment.bottomLeft,
-                  child: Text(
-                    '¡Hola ${ user.name.toString() }',
+                  child: Text('!Hola: ${ user.name.substring(0, user.name.length) }',
                     style: Theme.of( context ).textTheme.headline6,
                   ),
                 ),
@@ -105,7 +104,7 @@ class MainMenuScreen extends StatelessWidget {
             alignment: Alignment.centerRight,
             width: MediaQuery.of( context ).size.width * 0.75,
             child: Text(
-              'INVAPP 2022 Copyright © Todos los derechos reservados',
+              'INVAPP ${DateTime.now().year} | Copyright © Todos los derechos reservados',
               style: CustomTheme.footText.copyWith( color: Colors.grey ),
             ),
           ),

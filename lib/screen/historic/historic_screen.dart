@@ -42,10 +42,10 @@ class HistoricScreen extends StatelessWidget {
       padding: EdgeInsets.all(20),
       child: Column(
         children: <Widget>[
-          (historic.userName != null ) ? _historicItemData( Icons.contacts, historic.userName ) : Container(),
-          (historic.action != null )   ? _historicItemData( Icons.poll, historic.action ) : Container(),
-          (historic.description != null ) ? _historicItemData( Icons.poll, '${historic.description.substring(0,45)}...' ) : Container(),
-          (historic.createdAt != null ) ? _historicItemData( Icons.code, historic.createdAt.toIso8601String()) : Container(),
+          (historic.userName != null ) ? _historicItemData( Icons.contact_mail, historic.userName ) : Container(),
+          (historic.action != null )   ? _historicItemData( Icons.history, historic.action ) : Container(),
+          (historic.createdAt != null ) ? _historicItemData( Icons.date_range,  historic.createdAt.toString().substring(0, 19)) : Container(),
+          (historic.description != null ) ? _messegeHistoric(Icons.poll, historic.description, size): Container(),
         ],
       ),
     );
@@ -59,6 +59,27 @@ class HistoricScreen extends StatelessWidget {
           Text( data, style: TextStyle( fontSize: 15.0 )),
         ]),
         Divider(),
+      ],
+    );
+  }
+
+  Widget _messegeHistoric(IconData icono, String messege, Size size ) {
+    return Column(
+      children: [
+        Text('Descripción:', style: TextStyle( fontSize: 15.0, height: size.height * 0.002 )),
+        Container(
+          padding: EdgeInsets.only( top: 5.0 ),
+          width: size.width,
+          child: Text(
+            messege,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w300,
+              color: Colors.black
+            ),
+            textAlign: TextAlign.center,
+          )
+        ),
       ],
     );
   }

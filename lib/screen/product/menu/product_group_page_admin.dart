@@ -67,6 +67,7 @@ class ProductGroupAdminScreen extends StatelessWidget {
     return ListTileCustom(
       iconName: group.icon,
       title: Text( group.name ),
+      iconColor: _selectedColor(group.name),
       onTap: () {
         final data = [ group.name, user ];
         Navigator.pushNamed( context, 'product', arguments: data );
@@ -135,5 +136,13 @@ class ProductGroupAdminScreen extends StatelessWidget {
       print('no se a creado grupo');
     }
     return Navigator.pop(context);
+  }
+  _selectedColor( String action ) {
+    switch ( action ) {
+      case 'Eliminados': return Colors.red;
+      case 'Prestamos': return Colors.green;
+      case 'Todos': return Colors.yellow;
+      default: return Colors.blue;
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:invapp/models/category/category.model.dart';
 import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/category.service.dart';
+import 'package:invapp/utils/formatters/formatterText.dart';
 import 'package:invapp/utils/icons_string_util.dart';
 import 'package:provider/provider.dart';
 
@@ -66,9 +67,10 @@ class CategoryScreen extends StatelessWidget {
       padding: EdgeInsets.all(20),
       child: Column(
         children: <Widget>[
-          _categoryItemData( title: 'Nombre',data: category.name ),        
+          // _categoryItemData( title: 'Nombre',data: normalizeName(category.name) ),        
+          _categoryItemData( title: 'Nombre',data: category.name),        
           _categoryItemData( title: 'Icono',data: category.icon ),           
-          _categoryItemData( title: 'Activo',data: category.active.toString(), color: ( category.active ) ? Colors.green : Colors.red),
+          _categoryItemData( title: 'Activo',data: category.active ? 'Sí' : 'NO', color: ( category.active ) ? Colors.green : Colors.red),
         ],
       ),
     );

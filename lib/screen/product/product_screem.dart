@@ -6,6 +6,7 @@ import 'package:invapp/models/product/product_model.dart';
 import 'package:invapp/models/user/user.model.dart';
 import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/product.service.dart';
+import 'package:invapp/utils/formatters/formatterText.dart';
 import 'package:invapp/utils/icons_string_util.dart';
 import 'package:invapp/widgets/alert.dart';
 import 'package:provider/provider.dart';
@@ -83,13 +84,12 @@ class ProductScreen extends StatelessWidget {
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          _productItemData(title: 'Nombre', data: product.name),
-          _productItemData(title: 'Categoria', data: product.category),
-          _productItemData(
-              title: 'Cantidad', data: product.quantity.toString()),
-          _productItemData(title: 'Ubicacion', data: product.ubication),
-          _productItemData(title: 'Grupo', data: product.group),
-          _productItemData(title: 'Precio', data: product.price.toString()),
+          _productItemData(title: 'Nombre', data: formatterName(product.name)),
+          _productItemData(title: 'Categoria', data: formatterName(product.category)),
+          _productItemData(title: 'Cantidad', data: product.quantity.toString()),
+          _productItemData(title: 'Ubicacion', data: formatterName(product.ubication)),
+          _productItemData(title: 'Grupo', data: formatterName(product.group)),
+          _productItemData(title: 'Precio', data: formatterPrice(product.price)),
           _productItemData(
               title: 'Observacion',
               data: (product.observations.length >= 33)
@@ -97,7 +97,7 @@ class ProductScreen extends StatelessWidget {
                   : product.observations.trim()),
           _productItemData(
               title: 'Activo',
-              data: product.active.toString(),
+              data: product.active ? 'SÍ' : 'NO',
               color: (product.active) ? Colors.green : Colors.red),
         ],
       ),

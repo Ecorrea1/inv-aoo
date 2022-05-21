@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:invapp/models/ubication/ubication.model.dart';
 import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/ubication.service.dart';
+import 'package:invapp/utils/formatters/formatterText.dart';
 import 'package:invapp/utils/formatters/uppercase_text_formatter.dart';
 import 'package:invapp/widgets/list_tile_widget.dart';
 import 'package:provider/provider.dart';
@@ -67,8 +68,7 @@ class UbicationListScreen extends StatelessWidget {
   _groupTile(context, Ubication ubication) {
     return ListTileCustom(
         iconName: ubication.icon,
-        title: Text(ubication.name),
-        // subtitle: Text( ubication.action ),
+        title: Text(formatterName(ubication.name)),
         onTap: () => Navigator.pushNamed(context, 'ubication-detail', arguments: ubication));
   }
 

@@ -72,7 +72,7 @@ class UbicationScreen extends StatelessWidget {
         children: <Widget>[
           _ubicationItemData( title: 'Nombre', data: ubication.name ),
           _ubicationItemData( title: 'Icono', data: ubication.icon ),
-          _ubicationItemData( title: 'Activo', data: ubication.active.toString(), color: ( ubication.active ) ? Colors.green : Colors.red ),
+          _ubicationItemData( title: 'Activo', data: ubication.active ? 'Sí' : 'NO', color: ( ubication.active ) ? Colors.green : Colors.red ),
         ],
       ),
     );

@@ -3,7 +3,9 @@ import 'package:invapp/models/product/product_model.dart';
 import 'package:invapp/models/user/user.model.dart';
 import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/product.service.dart';
+import 'package:invapp/utils/formatters/formatterText.dart';
 import 'package:invapp/utils/formatters/uppercase_text_formatter.dart';
+import 'package:invapp/widgets/list_tile_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProductListScreen extends StatelessWidget {
@@ -84,15 +86,36 @@ Widget _productList(BuildContext context, ProductService service) {
       });
 }
 
+// Widget _product(BuildContext context, Product product) {
+//   return ListTile(
+//       leading: CircleAvatar(
+//         child: Text(product.category.substring(0, 2)),
+//         backgroundColor: Colors.blue[100],
+//       ),
+//       tileColor: (product.active) ? Colors.white : Colors.grey,
+//       title: Text(product.name),
+//       subtitle: Text(product.category),
+//       trailing: Text(product.quantity.toString(), style: TextStyle(fontSize: 20)),
+//       onTap: () => Navigator.pushNamed(context, 'product-detail', arguments: product));
+// }
 Widget _product(BuildContext context, Product product) {
-  return ListTile(
+  return ListTileCustom(
       leading: CircleAvatar(
-        child: Text(product.category.substring(0, 2)),
-        backgroundColor: Colors.blue[100],
+        child: Text(product.quantity.toString()),
+        backgroundColor: _selectedColor(product.quantity),
       ),
-      tileColor: (product.active) ? Colors.white : Colors.grey,
-      title: Text(product.name),
-      subtitle: Text(product.category),
-      trailing: Text(product.quantity.toString(), style: TextStyle(fontSize: 20)),
-      onTap: () => Navigator.pushNamed(context, 'product-detail', arguments: product));
+      backgroundColor: (product.active) ? Colors.white : Colors.red,
+      title: Text( product.name),
+      subtitle: Text( product.category),
+      trailing: Text( formatterPrice(product.price), style: TextStyle(fontSize: 20)),
+      onTap: () => Navigator.pushNamed(context, 'product-detail', arguments: product)
+    );
 }
+
+_selectedColor( int action ) {
+    switch ( action ) {
+      case 0: return Colors.red;
+      case 1: return Colors.yellow;
+      default: return Colors.blue;
+    }
+  }

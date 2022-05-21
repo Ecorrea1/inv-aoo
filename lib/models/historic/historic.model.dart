@@ -28,6 +28,6 @@ class Historic {
     'userName'  : userName,
     'action'    : action,
     'description'    : description,
-    'createdAt' : createdAt..toIso8601String()
+    'createdAt' : createdAt
   };
 }
