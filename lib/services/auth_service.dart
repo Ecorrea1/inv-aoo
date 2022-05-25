@@ -1,12 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:invapp/global/enviroment.global.dart';
 import 'package:invapp/models/login/login_response.model.dart';
 import 'package:invapp/models/user/user.model.dart';
-//import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class AuthService with ChangeNotifier {
   User user;

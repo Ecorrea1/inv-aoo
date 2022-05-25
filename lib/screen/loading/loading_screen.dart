@@ -10,7 +10,7 @@ class LoadingScreen extends StatelessWidget {
       body: FutureBuilder(
         future: _sesion( context ),
         builder: ( BuildContext context, AsyncSnapshot<dynamic> snapshot ) { 
-         return Center( child: Text( 'Espere' ),); 
+         return Center( child: CircularProgressIndicator(),); 
        },
       )
     );

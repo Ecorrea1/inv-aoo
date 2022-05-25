@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:invapp/models/historic/historic.model.dart';
+import 'package:invapp/utils/icons_string_util.dart';
 
 class HistoricScreen extends StatelessWidget {
 
@@ -10,7 +11,7 @@ class HistoricScreen extends StatelessWidget {
     Size size         = MediaQuery.of( context ).size;
     
     return Scaffold(
-      appBar: AppBar( elevation: 0.0 ),
+      appBar: AppBar( elevation: 0.0, backgroundColor: _selectedOption(historic.action, false), ),
       body: Container(
         child: Column(
           children: <Widget>[
@@ -26,11 +27,11 @@ class HistoricScreen extends StatelessWidget {
     return Container(
       width: size.width,
       height: size.height * 0.25,
-      color: Theme.of( context ).primaryColor,
+      color: _selectedOption(historic.action, false),
       child: Icon(
-        Icons.history,
+         getIcon( _selectedOption(historic.action, true) ),
         size: 150,
-        color: Colors.white,
+        color:Colors.white,
       )
     );
   }
@@ -82,5 +83,12 @@ class HistoricScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+   _selectedOption( String action, bool options ) {
+    if (action.contains('Actualizacion') || action.contains('Actualizado')) return options ? 'FAuserEdit': Colors.green;
+    if (action.contains('Eliminacion')) return options ? 'FAuserTimes' : Colors.red;
+    if (action.contains('Creado')) return options ? 'FAuserPlus' : Colors.yellow;
+    return options ? 'FAuser' : Colors.blue;
   }
 }

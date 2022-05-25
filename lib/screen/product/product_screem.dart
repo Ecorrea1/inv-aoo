@@ -49,19 +49,18 @@ class ProductScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: newMethod(user, context, product),
+      floatingActionButton: methodFloatUpdatePorduct(user, context, product),
     );
   }
 
-  FloatingActionButton newMethod(
+  FloatingActionButton methodFloatUpdatePorduct(
       User user, BuildContext context, Product product) {
     if (!user.role.privileges.modifyProducts) return null;
 
     return FloatingActionButton(
         child: Icon(Icons.edit),
         elevation: 1,
-        onPressed: () =>
-            Navigator.pushNamed(context, 'update-product', arguments: product));
+        onPressed: () => Navigator.pushNamed(context, 'update-product', arguments: product));
   }
 
   Widget _productHeader(context, size, product) {
@@ -70,7 +69,7 @@ class ProductScreen extends StatelessWidget {
         height: size.height * 0.25,
         color: Theme.of(context).primaryColor,
         child: Icon(
-          Icons.person,
+          Icons.shopping_cart,
           size: 150,
           color: Colors.white,
         ));
@@ -82,7 +81,6 @@ class ProductScreen extends StatelessWidget {
       height: size.height * 0.63,
       padding: EdgeInsets.only(top: 10),
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           _productItemData(title: 'Nombre', data: formatterName(product.name)),
           _productItemData(title: 'Categoria', data: formatterName(product.category)),
@@ -91,34 +89,19 @@ class ProductScreen extends StatelessWidget {
           _productItemData(title: 'Grupo', data: formatterName(product.group)),
           _productItemData(title: 'Precio', data: formatterPrice(product.price)),
           _productItemData(
-              title: 'Observacion',
-              data: (product.observations.length >= 33)
-                  ? product.observations.substring(0, 34).trim() + '...'
-                  : product.observations.trim()),
-          _productItemData(
               title: 'Activo',
               data: product.active ? 'SÍ' : 'NO',
               color: (product.active) ? Colors.green : Colors.red),
+          _observationProduct( data: product.observations, size: size),
         ],
       ),
     );
   }
 
-  Widget _productItemData(
-      {@required String data, @required title, Color color}) {
-    //
+  Widget _productItemData({@required String data, @required title, Color color}) {
     if (data == null || data.isEmpty) return Container();
     return Column(
-      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Text(
-        //   title,
-        //   style: TextStyle(
-        //     fontSize: 15,
-        //     fontWeight: FontWeight.bold
-        //   ),
-        // ),
-        // SizedBox( height: 5 ),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -137,6 +120,26 @@ class ProductScreen extends StatelessWidget {
     );
   }
 
+  Widget _observationProduct({@required String data, Size size}) {
+    return Column(
+      children: [
+        Text('Descripción:',
+            style: TextStyle(fontSize: 15.0, height: size.height * 0.002)),
+        Container(
+            padding: EdgeInsets.only(top: 5.0),
+            width: size.width,
+            child: Text(
+              data,
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black),
+              textAlign: TextAlign.center,
+            )),
+      ],
+    );
+  }
+
   _updateProduct(context, Product product, User user) async {
     if (Platform.isAndroid) {
       // Android
@@ -149,26 +152,12 @@ class ProductScreen extends StatelessWidget {
               children: [
                 TextField(
                   controller: quantityController,
-                  decoration: InputDecoration(
-                      // labelText: labelText,
-                      // alignLabelWithHint: true,
-                      // prefixText: 'Hola Mundo',
-                      // prefixIcon: Icon( icon ),
-                      // focusedBorder: InputBorder.none,
-                      // border: InputBorder.none,
-                      hintText: 'Ingresa cantidad'),
+                  decoration: InputDecoration( hintText: 'Ingresa cantidad'),
                 ),
                 SizedBox(height: 3),
                 TextField(
                   controller: nameController,
-                  decoration: InputDecoration(
-                      // labelText: labelText,
-                      // alignLabelWithHint: true,
-                      // prefixText: 'Hola Mundo',
-                      // prefixIcon: Icon( icon ),
-                      // focusedBorder: InputBorder.none,
-                      // border: InputBorder.none,
-                      hintText: 'Ingresa'),
+                  decoration: InputDecoration( hintText: 'Ingresa'),
                 ),
               ],
             ),
@@ -218,14 +207,9 @@ class ProductScreen extends StatelessWidget {
   }
 
   _updateInfo(context, Product product, User user) async {
-    if (quantityController.text.isEmpty || nameController.text.isEmpty)
-      return showAlert(
-          context, 'Prestar Producto', 'Ingrese algun dato por favor ');
-
-    String obs =
-        '${user.name} presto este item a ${nameController.text} ${quantityController.text} de ${product.quantity}  del grupo: ${product.group}, categoria: ${product.category} /  Datos de Observacion :  ${product.observations} ';
+    if (quantityController.text.isEmpty || nameController.text.isEmpty) return showAlert( context, 'Prestar Producto', 'Ingrese algun dato por favor ');
+    String obs = '${user.name} presto este item a ${nameController.text} ${quantityController.text} de ${product.quantity}  del grupo: ${product.group}, categoria: ${product.category} /  Datos de Observacion :  ${product.observations} ';
     int cant = product.quantity - int.parse(quantityController.text);
-
     final data = {
       'quantity': (cant == 0) ? 0 : cant,
       'group': 'Prestamos',
@@ -233,27 +217,19 @@ class ProductScreen extends StatelessWidget {
       'observations': obs,
       'user': user.email
     };
-
     bool resp = await _productSVC.updateProduct(uid: product.id, data: data);
-    print('respuesta: $resp');
-    if (!resp || resp == null)
-      return showAlert(context, 'Actualizar Producto',
-          'Hubieron Problemas con la actualizacion del item');
-    showAlert(
-        context, 'Actualizar Producto', 'El item se actualizo correctamente');
+    if (!resp || resp == null) return showAlert(context, 'Actualizar Producto','Hubieron Problemas con la actualizacion del item');
+    showAlert(context, 'Actualizar Producto', 'El item se actualizo correctamente');
     Navigator.pop(context);
   }
 
   _deleteInfo(context, Product product, User user, resp) async {
-
     if (!resp) return;
     final delete = await _productSVC.deleteProduct(uid: product.id, user: user.email);
     if (delete && resp) {
-
       showAlert(context, 'Eliminacion de item', 'Eliminacion exitosa');
       Navigator.pop(context);
       Navigator.pop(context);
-    
     } else {
       showAlert(context, 'Eliminacion de item', 'Tuvimos un problema, Intenta de nuevo');
     }

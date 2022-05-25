@@ -31,20 +31,18 @@ class HistoricListScreen extends StatelessWidget {
 
   _groupTile( context, Historic historic ) {
     return ListTileCustom(
-      iconName: 'FAandroid',
+      iconName: _selectedOption(historic.action, true),
       title: Text( historic.userName ),
       subtitle: Text( historic.action ),
-      iconColor: _selectedColor(historic.action),
+      iconColor: _selectedOption(historic.action, false),
       onTap: () => Navigator.pushNamed( context, 'historic-detail', arguments: historic )
     );
   }
 
-  _selectedColor( String action ) {
-    switch ( action ) {
-      case 'Eliminacion de Usuario': return Colors.red;
-      case 'Actualizacion de Usuario': return Colors.green;
-      case 'Creado Nuevo Usuario': return Colors.blue;
-      default: return Colors.white;
-    }
+  _selectedOption( String action, bool options ) {
+    if (action.contains('Actualizacion') || action.contains('Actualizado')) return options ? 'FAuserEdit': Colors.green;
+    if (action.contains('Eliminacion')) return options ? 'FAuserTimes' : Colors.red;
+    if (action.contains('Creado')) return options ? 'FAuserPlus' : Colors.yellow;
+    return options ? 'FAuser' : Colors.blue;
   }
 }
