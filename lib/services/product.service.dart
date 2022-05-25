@@ -24,20 +24,12 @@ class ProductService {
       query += active != null ? 'active=$active&' : '';
 
       if(group == 'Todos') query = '';
-
-      final resp = await http.get(
-          Uri.parse('${Enviroments.apiUrl}/product/products?$query'),
-          headers: {'Content-Type': 'application/json'});
-      if (resp.statusCode == 200) {
-        final productResponse =
-            ProductResponse.fromJson(json.decode(resp.body));
-        if (productResponse.ok) {
-          this._allProduct = productResponse.data;
-          changeProduct(_allProduct);
-        }
-        return productResponse;
-      }
-      return null;
+      final resp = await http.get(Uri.parse('${Enviroments.apiUrl}/product/products?$query'), headers: {'Content-Type': 'application/json'});
+      if (resp.statusCode != 200) return null;
+      final productResponse = ProductResponse.fromJson(json.decode(resp.body));
+      if (productResponse.ok == false) return productResponse;
+      this._allProduct = productResponse.data;
+      changeProduct(_allProduct);
     } catch (error) {
       print(error);
       return null;
@@ -45,25 +37,14 @@ class ProductService {
   }
 
   Future<bool> addNewProduct({ final data }) async {
-    // name, img, category, quantity, price, ubication, observations, user
     try {
-      final resp = await http.post(
-          Uri.parse('${Enviroments.apiUrl}/product/new'),
-          body: jsonEncode(data),
-          headers: {'Content-Type': 'application/json'});
-      if (resp.statusCode == 201) {
+      final resp = await http.post(Uri.parse('${Enviroments.apiUrl}/product/new'), body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
+      if (resp.statusCode != 201) return false;
         final productResponse = addProductFromJson(resp.body);
-
-        if (productResponse.ok) {
-          print(productResponse.msg);
-          this._allProduct.add(productResponse.data);
-          changeProduct(_allProduct);
-        }
-        print(productResponse.msg);
+        if (productResponse.ok == false) return false;
+        this._allProduct.add(productResponse.data);
+        changeProduct(_allProduct);
         return true;
-      }
-      print(resp.body);
-      return false;
     } catch (error) {
       print(error);
       return false;
@@ -72,21 +53,13 @@ class ProductService {
 
   Future<bool> updateProduct({ @required String uid, final data }) async {
     try {
-      final resp = await http.put(
-          Uri.parse('${Enviroments.apiUrl}/product/$uid'),
-          body: jsonEncode(data),
-          headers: {'Content-Type': 'application/json'});
-      if (resp.statusCode == 200) {
-        final productResponse = addProductFromJson(resp.body);
-
-        if (productResponse.ok) {
-          print(productResponse.msg);
-          print(productResponse.data.id);
-        }
-        return true;
-      }
-      print(resp.body);
-      return false;
+      final resp = await http.put(Uri.parse('${Enviroments.apiUrl}/product/$uid'), body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
+      if (resp.statusCode != 200)  return false;
+      final productResponse = addProductFromJson(resp.body);
+      if (productResponse.ok == false)  return false;
+      this._allProduct.add(productResponse.data);
+      changeProduct(_allProduct);
+      return true;
     } catch (error) {
       print(error);
       return false;
@@ -95,19 +68,8 @@ class ProductService {
 
   Future<bool> deleteProduct({ @required String uid, String user }) async {
     try {
-      final resp = await http.post(
-          Uri.parse('${Enviroments.apiUrl}/product/$uid'),
-          body: jsonEncode({'user': user}),
-          headers: {'Content-Type': 'application/json'});
-
-      if (resp.statusCode == 200) {
-        final respBody = jsonDecode(resp.body);
-        print(respBody['msg']);
-        print(respBody['data']);
-        return true;
-      }
-
-      return false;
+      final resp = await http.post(Uri.parse('${Enviroments.apiUrl}/product/$uid'), body: jsonEncode({'user': user}), headers: {'Content-Type': 'application/json'});
+      return resp.statusCode == 200 ? true : false;
     } catch (error) {
       print(error);
       return false;

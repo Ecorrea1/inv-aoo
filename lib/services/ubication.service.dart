@@ -17,42 +17,27 @@ class UbicationService {
 
   Future<UbicationResponseModel> getUbications() async {
     try {
-      final response = await http.get(Uri.parse('${Enviroments.apiUrl}/ubication/'),
-          headers: {'Content-Type': 'application/json'});
-      if (response != null) {
-        final ubicationResponse =
-            UbicationResponseModel.fromJson(json.decode(response.body));
-        if (ubicationResponse.ok) {
-          this._allubications = ubicationResponse.data;
-          this.changeUbications(this._allubications);
-        }
-        return ubicationResponse;
-      }
-      return null;
+      final response = await http.get(Uri.parse('${Enviroments.apiUrl}/ubication/'), headers: {'Content-Type': 'application/json'});
+      if (response == null) return null;
+      final ubicationResponse = UbicationResponseModel.fromJson(json.decode(response.body));
+      if (ubicationResponse.ok == false) return ubicationResponse;
+      this._allubications = ubicationResponse.data;
+      this.changeUbications(this._allubications);
     } catch (error) {
       print(error);
       return null;
     }
   }
 
-  Future<bool> addNewUbication(
-      {@required String name, String icon, String userName}) async {
+  Future<bool> addNewUbication({@required String name, String icon, String userName}) async {
     try {
-      final resp = await http.post(Uri.parse('${Enviroments.apiUrl}/ubication/new'),
-          body: jsonEncode({'name': name, 'icon': icon, 'user': userName}),
-          headers: {'Content-Type': 'application/json'});
-      if (resp.statusCode == 201) {
-        final ubicationResponse = addUbicationResponseModelFromJson(resp.body);
-
-        if (ubicationResponse.ok) {
-          this._allubications.add(ubicationResponse.data);
-          this.changeUbications(this._allubications);
-        }
-
-        return true;
-      }
-
-      return false;
+      final resp = await http.post(Uri.parse('${Enviroments.apiUrl}/ubication/new'), body: jsonEncode({'name': name, 'icon': icon, 'user': userName}), headers: {'Content-Type': 'application/json'});
+      if (resp.statusCode != 201) return false;
+      final ubicationResponse = addUbicationResponseModelFromJson(resp.body);
+      if (ubicationResponse.ok == false) return false;
+      this._allubications.add(ubicationResponse.data);
+      this.changeUbications(this._allubications);
+      return true;
     } catch (error) {
       print(error);
       return false;
@@ -64,19 +49,9 @@ class UbicationService {
       final resp = await http.put(Uri.parse('${Enviroments.apiUrl}/ubication/$uid'),
           body: jsonEncode(data),
           headers: {'Content-Type': 'application/json'});
-      if (resp.statusCode == 200) {
-        final ubicationResponse = addUbicationResponseModelFromJson(resp.body);
-
-        if (ubicationResponse.ok) {
-          print(ubicationResponse.msg);
-          print(ubicationResponse.data);
-        }
-
-        return true;
-      }
-      final respBody = jsonDecode(resp.body);
-      print('Muestra :${respBody['msg']}');
-      return false;
+      if (resp.statusCode != 200) return false;
+      final ubicationResponse = addUbicationResponseModelFromJson(resp.body);
+      return  ubicationResponse.ok ? true : false;
     } catch (error) {
       print(error);
       return false;
@@ -85,16 +60,8 @@ class UbicationService {
 
   Future<bool> deleteUbication({@required String uid, String userName}) async {
     try {
-      final resp = await http.post(Uri.parse('${Enviroments.apiUrl}/ubication/$uid'),
-          body: jsonEncode({'user': userName}),
-          headers: {'Content-Type': 'application/json'});
-      if (resp.statusCode == 200) {
-        final respBody = jsonDecode(resp.body);
-        print(respBody['msg']);
-        return true;
-      }
-
-      return false;
+      final resp = await http.post(Uri.parse('${Enviroments.apiUrl}/ubication/$uid'), body: jsonEncode({'user': userName}), headers: {'Content-Type': 'application/json'});
+      return resp.statusCode == 200 ? true : false;
     } catch (error) {
       print(error);
       return false;
@@ -102,10 +69,7 @@ class UbicationService {
   }
 
   void applyFilter(String filter) {
-    changeUbications(this
-        ._allubications
-        .where((ubications) => ubications.name.toUpperCase().contains(filter.toUpperCase()))
-        .toList());
+    changeUbications(this._allubications.where((ubications) => ubications.name.toUpperCase().contains(filter.toUpperCase())).toList());
   }
 
   void cleanFilter() {

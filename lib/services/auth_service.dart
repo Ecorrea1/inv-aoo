@@ -31,53 +31,36 @@ class AuthService with ChangeNotifier {
   }
 
   Future<bool> login(String email, String password) async {
-    //final data = { 'email': email,  'pass' : password };
     this.authentify = true;
-    final resp = await http.post(  Uri.parse('${Enviroments.apiUrl}/login'),
-        body: jsonEncode({'email': email, 'pass': password}),
-        headers: {'Content-Type': 'application/json'});
-    print(resp.body);
+    final resp = await http.post(  Uri.parse('${Enviroments.apiUrl}/login'), body: jsonEncode({'email': email, 'pass': password}), headers: {'Content-Type': 'application/json'});
     this.authentify = false;
-    if (resp.statusCode == 200) {
-      final loginResponse = loginResponseFromJson(resp.body);
-      this.user = loginResponse.data;
-      await this._saveToken(loginResponse.token);
-      return true;
-    } else {
-      return false;
-    }
+    if (resp.statusCode != 200) return false;
+    final loginResponse = loginResponseFromJson(resp.body);
+    this.user = loginResponse.data;
+    await this._saveToken(loginResponse.token);
+    return true;
   }
 
-  Future register(
-      {String name, String email, String pass, String user = 'App'}) async {
+  Future register({String name, String email, String pass, String user = 'App'}) async {
     this.authentify = true;
-    final resp = await http.post( Uri.parse('${Enviroments.apiUrl}/login/new'),
-        body: jsonEncode(
-            {'name': name, 'email': email, 'pass': pass, 'user': user}),
-        headers: {'Content-Type': 'application/json'});
+    final resp = await http.post( Uri.parse('${Enviroments.apiUrl}/login/new'), body: jsonEncode({'name': name, 'email': email, 'pass': pass, 'user': user}), headers: {'Content-Type': 'application/json'});
     this.authentify = false;
-    if (resp.statusCode == 201) {
-      final respBody = jsonDecode(resp.body);
-      return respBody['msg'];
-    } else {
-      final respBody = jsonDecode(resp.body);
-      return respBody['msg'];
-    }
+    final respBody = jsonDecode(resp.body);
+    return respBody['msg'];
   }
 
   Future<bool> isLoggedIn() async {
     final token = await this._storage.read(key: 'token');
     final resp = await http.get( Uri.parse('${Enviroments.apiUrl}/login/renew'),
         headers: {'Content-Type': 'application/json', 'x-token': token});
-    if (resp.statusCode == 200) {
-      final loginResponse = loginResponseFromJson(resp.body);
-      this.user = loginResponse.data;
-      await this._saveToken(loginResponse.token);
-      return true;
-    } else {
+    if (resp.statusCode != 200) {
       this.logout();
       return false;
     }
+    final loginResponse = loginResponseFromJson(resp.body);
+    this.user = loginResponse.data;
+    await this._saveToken(loginResponse.token);
+    return true;
   }
 
   Future _saveToken(String token) async {
