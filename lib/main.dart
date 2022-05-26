@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:invapp/routes/routes.dart';
 import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/socket_service.dart';
+// import 'package:invapp/theme/theme.dart';
 import 'package:provider/provider.dart';
  
 void main() => runApp(MyApp());
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: ( _ ) => AuthService())
         ],
         child: MaterialApp(
+        // theme:theme,
         debugShowCheckedModeBanner: false,
         title: 'INVAPP',
         initialRoute: 'loading',

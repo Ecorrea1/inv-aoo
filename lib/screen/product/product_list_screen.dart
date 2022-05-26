@@ -3,6 +3,7 @@ import 'package:invapp/models/product/product_model.dart';
 import 'package:invapp/models/user/user.model.dart';
 import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/product.service.dart';
+import 'package:invapp/theme/theme.dart';
 import 'package:invapp/utils/formatters/formatterText.dart';
 import 'package:invapp/utils/formatters/uppercase_text_formatter.dart';
 import 'package:invapp/widgets/list_tile_widget.dart';
@@ -64,7 +65,6 @@ class ProductListScreen extends StatelessWidget {
 
   _refreshList(data) async {
     final refresh = await _productService.getProductList(group: data);
-
     (refresh.ok)
       ? print('Refresco correcto')
       : print('Hubo algun problema al recargar');
@@ -77,12 +77,15 @@ Widget _productList(BuildContext context, ProductService service) {
       builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
         if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
         if (snapshot.data.isEmpty) return Center( child: Text('No hay coincidencias', style: TextStyle(fontSize: 20),));
-
         List<Product> listStream = snapshot.data;
         List<Widget> listProduct = [];
-
         for (final product in listStream)  listProduct.add(_product(context, product));
-        return Wrap(alignment: WrapAlignment.start, children: listProduct);
+        return Column(
+          children: [
+            Container(child: Text('Total: ${listStream.length}', style: TextStyle(fontSize: 20)), color: theme.backgroundColor,),
+            Wrap(alignment: WrapAlignment.start, children: listProduct),
+          ],
+        );
       });
 }
 
