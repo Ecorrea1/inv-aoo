@@ -43,10 +43,10 @@ class HistoricScreen extends StatelessWidget {
       padding: EdgeInsets.all(20),
       child: Column(
         children: <Widget>[
-          (historic.userName != null ) ? _historicItemData( Icons.contact_mail, historic.userName ) : Container(),
-          (historic.action != null )   ? _historicItemData( Icons.history, historic.action ) : Container(),
-          (historic.createdAt != null ) ? _historicItemData( Icons.date_range,  historic.createdAt.toString().substring(0, 19)) : Container(),
-          (historic.description != null ) ? _messegeHistoric(Icons.poll, historic.description, size): Container(),
+          ( historic.userName != null ) ? _historicItemData( Icons.contact_mail, historic.userName ) : Container(),
+          ( historic.action != null )   ? _historicItemData( Icons.history, historic.action ) : Container(),
+          ( historic.createdAt != null ) ? _historicItemData( Icons.date_range,  historic.createdAt.toString().substring(0, 19) ) : Container(),
+          ( historic.description != null ) ? _messegeHistoric( Icons.poll, historic.description, size ): Container(),
         ],
       ),
     );

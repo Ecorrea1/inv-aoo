@@ -54,7 +54,6 @@ class ProductGroupScreen extends StatelessWidget {
 
   Widget _createMenuOption(String title, String icon, String user, BuildContext context) {
     double paddingLeft = MediaQuery.of(context).size.width * 0.1;
-
     return Container(
       padding: EdgeInsets.only(top: 5),
       margin: EdgeInsets.only(left: paddingLeft, right: 10),
@@ -89,9 +88,4 @@ class ProductGroupScreen extends StatelessWidget {
       ),
     );
   }
-
-  // void _logout( BuildContext context ) {
-  //   AuthService.deleteToken();
-  //   Navigator.pushReplacementNamed( context, 'login' );
-  // }
 }

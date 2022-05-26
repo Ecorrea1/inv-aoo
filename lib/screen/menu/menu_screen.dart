@@ -6,10 +6,8 @@ import 'package:invapp/utils/icons_string_util.dart';
 import 'package:provider/provider.dart';
 
 class MainMenuScreen extends StatelessWidget {
-
   @override
   Widget build( BuildContext context ) {
-    
     final authService   = Provider.of<AuthService>( context, listen : false );
     final user          = authService.user;
 
@@ -114,9 +112,7 @@ class MainMenuScreen extends StatelessWidget {
   }
 
   Widget _createMenuOption( String title, String icon, String route, User user, BuildContext context ) {
-
     double paddingLeft = MediaQuery.of( context ).size.width * 0.1;
-    
     return Container(
       padding: EdgeInsets.only( top: 5 ),
       margin: EdgeInsets.only( left: paddingLeft, right: 10 ),

@@ -21,6 +21,7 @@ class CategoryService {
         if (categoryResponse.ok == false) return categoryResponse;
         this._allCategories = categoryResponse.data;
         this.changeCategories(this._allCategories);
+        return categoryResponse;
     } catch (e) {
       print(e);
       return null;

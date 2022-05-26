@@ -23,6 +23,7 @@ class UbicationService {
       if (ubicationResponse.ok == false) return ubicationResponse;
       this._allubications = ubicationResponse.data;
       this.changeUbications(this._allubications);
+      return ubicationResponse;
     } catch (error) {
       print(error);
       return null;

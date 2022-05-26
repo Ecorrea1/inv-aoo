@@ -11,16 +11,13 @@ import 'package:invapp/widgets/list_tile_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProductGroupAdminScreen extends StatelessWidget {
-
   final _productGroupSvc  = new ProductGroupService();
   final contactgroup      = new ProductGroup();
   final contactResponse   = new ProductGroupResponseModel();
   final textController    = new TextEditingController();
-  //final _nameFilterController = new TextEditingController();
 
   @override
   Widget build( BuildContext context ) {
-
     _productGroupSvc.getContactGroup();
     final userEmail = ModalRoute.of(context).settings.arguments;
     // _productGroupSvc.getContactGroup(token: Provider.of<UserProvider>(context).token);
@@ -36,7 +33,6 @@ class ProductGroupAdminScreen extends StatelessWidget {
 
   FloatingActionButton addGroupBottom(BuildContext context, Object userEmail, User user) {
     if ( !user.role.privileges.createGroup ) return null;
-
     return FloatingActionButton(
       child: Icon( Icons.add ),
       elevation: 1,
@@ -48,17 +44,11 @@ class ProductGroupAdminScreen extends StatelessWidget {
     return StreamBuilder<List<ProductGroup>>(
       stream: _productGroupSvc.productGroupStream,
       builder: ( BuildContext context, AsyncSnapshot<List<ProductGroup>> snapshot ) {
-        
         if ( !snapshot.hasData && snapshot.data == null ) return Center( child: CircularProgressIndicator() );
-        
-        List listStream                 = snapshot.data;
+        List listStream = snapshot.data;
         List<Widget> listContactsGroup  = [];
-        
-        for ( final contactGroup in listStream ) {
-          listContactsGroup.add( _groupTile( context, contactGroup, user ) );
-        }
-        return Wrap( alignment: WrapAlignment.start, children: listContactsGroup );
-      
+        for ( final contactGroup in listStream ) { listContactsGroup.add( _groupTile( context, contactGroup, user ) ); }
+        return Wrap( alignment: WrapAlignment.start, children: listContactsGroup );  
       }
     );
   }
@@ -75,9 +65,7 @@ class ProductGroupAdminScreen extends StatelessWidget {
     );
   }
 
-
   addNewGroup( context, String userName ) async {
-    
     if ( Platform.isAndroid ) {
       // Android
       return showDialog(
@@ -127,16 +115,12 @@ class ProductGroupAdminScreen extends StatelessWidget {
   }
 
   _sendInformation( context, String userName ) async {
-    
     final result = await _productGroupSvc.addNewProductGroup( name: textController.text , icon: 'FAandroid', userName: userName );
     print( 'result: $result ' );
-    if( result  ){ 
-      print('creado grupo');   
-    }else{
-      print('no se a creado grupo');
-    }
+    result ? print('creado grupo') : print('no se a creado grupo'); 
     return Navigator.pop(context);
   }
+
   _selectedColor( String action ) {
     switch ( action ) {
       case 'Eliminados': return Colors.red;

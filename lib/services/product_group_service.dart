@@ -26,6 +26,7 @@ class ProductGroupService {
       if (groupResponse.ok == false) return groupResponse;
       this._allProductGroups = groupResponse.data;
       this.changeGroup(this._allProductGroups);
+      return groupResponse;
     } catch (e) {
       print(e);
       return null;

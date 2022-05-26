@@ -30,6 +30,7 @@ class ProductService {
       if (productResponse.ok == false) return productResponse;
       this._allProduct = productResponse.data;
       changeProduct(_allProduct);
+      return productResponse; 
     } catch (error) {
       print(error);
       return null;

@@ -86,18 +86,6 @@ Widget _productList(BuildContext context, ProductService service) {
       });
 }
 
-// Widget _product(BuildContext context, Product product) {
-//   return ListTile(
-//       leading: CircleAvatar(
-//         child: Text(product.category.substring(0, 2)),
-//         backgroundColor: Colors.blue[100],
-//       ),
-//       tileColor: (product.active) ? Colors.white : Colors.grey,
-//       title: Text(product.name),
-//       subtitle: Text(product.category),
-//       trailing: Text(product.quantity.toString(), style: TextStyle(fontSize: 20)),
-//       onTap: () => Navigator.pushNamed(context, 'product-detail', arguments: product));
-// }
 Widget _product(BuildContext context, Product product) {
   return ListTileCustom(
       leading: CircleAvatar(
@@ -113,9 +101,9 @@ Widget _product(BuildContext context, Product product) {
 }
 
 _selectedColor( int action ) {
-    switch ( action ) {
-      case 0: return Colors.red;
-      case 1: return Colors.yellow;
-      default: return Colors.blue;
-    }
+  switch ( action ) {
+    case 0: return Colors.red;
+    case 1: return Colors.yellow;
+    default: return Colors.blue;
   }
+}

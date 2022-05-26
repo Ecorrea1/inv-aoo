@@ -7,12 +7,10 @@ import 'package:invapp/utils/icons_string_util.dart';
 import 'package:provider/provider.dart';
 
 class CategoryScreen extends StatelessWidget {
-
   final _categorySVC = new CategoryService();
 
   @override
     Widget build( BuildContext context ) {
-    
     final authService   = Provider.of<AuthService>( context, listen : false );
     final user          = authService.user;
     Category category = ModalRoute.of( context ).settings.arguments;
@@ -67,8 +65,7 @@ class CategoryScreen extends StatelessWidget {
       padding: EdgeInsets.all(20),
       child: Column(
         children: <Widget>[
-          // _categoryItemData( title: 'Nombre',data: normalizeName(category.name) ),        
-          _categoryItemData( title: 'Nombre',data: category.name),        
+          _categoryItemData( title: 'Nombre',data: formatterName(category.name) ),      
           _categoryItemData( title: 'Icono',data: category.icon ),           
           _categoryItemData( title: 'Activo',data: category.active ? 'Sí' : 'NO', color: ( category.active ) ? Colors.green : Colors.red),
         ],
@@ -107,14 +104,10 @@ class CategoryScreen extends StatelessWidget {
   }
 
   _deleteInfo( context, Category category, String user ) async {
-
     final delete = await _categorySVC.deleteCategory( uid: category.id, user: user );
-    print( 'Esto es el :  $delete' );
-    if ( delete ) {
-      print('Eliminacion de ubicacion sin problemas');
-    } else {
-      print('Tuvo algunos problemas');
-    }
+    ( delete ) 
+    ? print('Eliminacion de ubicacion sin problemas')
+    : print('Tuvo algunos problemas');
     Navigator.pop(context);
   }
 }

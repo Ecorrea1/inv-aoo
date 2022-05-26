@@ -1984,6 +1984,7 @@ final _icons = <String, IconData>{
   'FAtrello' : FontAwesomeIcons.trello,
   'FAtrophy' : FontAwesomeIcons.trophy,  
   'FAtruck' : FontAwesomeIcons.truck,
+  'FAtruckLoading' : FontAwesomeIcons.truckRampBox,
   'FAtruckMonster' : FontAwesomeIcons.truckMonster,  
   'FAtruckMoving' : FontAwesomeIcons.truckMoving,  
   'FAtruckPickup' : FontAwesomeIcons.truckPickup,

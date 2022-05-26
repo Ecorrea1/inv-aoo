@@ -10,7 +10,8 @@ class Product {
     this.category,
     this.group,
     this.observations,
-    this.img
+    this.img,
+    this.total
   });
 
   int quantity;
@@ -23,6 +24,7 @@ class Product {
   String group;
   String observations;
   String img;
+  int total;
 
   factory Product.fromJson( Map <String, dynamic> json ) => Product (
 
@@ -36,6 +38,7 @@ class Product {
     group        : json["group"] == null ? null : json["group"],
     observations : json["observations"] == null ? '' : json["observations"],
     img          : json["img"] == null ? null : json["img"],
+    total        : json["total"] == null ? 0 : json["total"],
   
   );
 
@@ -51,6 +54,7 @@ class Product {
     "group"        : group        == null ? null : group,
     "observations" : observations == null ? null : observations,
     "img"          : img          == null ? null : img,
+    "total"        : quantity * price  == null ? 0 : total,
   
   };
 }
