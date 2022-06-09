@@ -28,8 +28,7 @@ class _FormLoginState extends State<FormLogin> {
             // labelText: 'Correo',
             placeholder: 'Ingrese su correo',
             keyboardType: TextInputType.emailAddress,
-            textController: emailController,
-            
+            textController: emailController,        
           ),
           CustomImput(
             icon: Icons.lock_outline,

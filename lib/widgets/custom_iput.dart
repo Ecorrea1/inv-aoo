@@ -4,11 +4,15 @@ class CustomImput extends StatelessWidget {
   final IconData icon;
   final String placeholder;
   final String labelText;
+  final String errorText;
   final TextEditingController textController;
   final TextInputType keyboardType;
   final TextCapitalization textCapitalization;
+  final Function onChanged;
   final int maxLines;
+  final int maxLength;
   final bool isPass;
+  final bool enabled;
 
   const CustomImput({
     Key key, 
@@ -16,10 +20,14 @@ class CustomImput extends StatelessWidget {
     @required this.placeholder, 
     @required this.textController, 
     this.labelText, 
+    this.errorText, 
     this.keyboardType = TextInputType.text, 
     this.textCapitalization = TextCapitalization.none, 
     this.maxLines = 1, 
-    this.isPass = false
+    this.maxLength, 
+    this.isPass = false,
+    this.enabled = true,
+    this.onChanged,
   }) : super(key: key);
 
 
@@ -46,9 +54,14 @@ class CustomImput extends StatelessWidget {
         keyboardType: keyboardType,
         textCapitalization: this.textCapitalization,
         maxLines: this.maxLines,
+        maxLength: this.maxLength,
+        enabled: this.enabled,
+        onChanged: this.onChanged,
         decoration: InputDecoration(
           labelText: labelText,
           alignLabelWithHint: true,
+          errorText: this.errorText,
+          // errorMaxLines: ,
           // prefixText: 'Hola Mundo',
           prefixIcon: Icon( icon ),
           focusedBorder: InputBorder.none,
