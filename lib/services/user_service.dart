@@ -21,13 +21,14 @@ class UserService {
       if (userResp.ok == false) return userResp;
       this._allUsers = userResp.data;
       this.changeUsers(this._allUsers);
+      return userResp;
     } catch (error) {
       print(error);
       return null;
     }
   }
 
-  Future <bool>updateUser({@required String uid, final data}) async {
+  Future <bool>updateUser({@required String uid, dynamic data}) async {
     try {
       final resp = await http.put(Uri.parse('${Enviroments.apiUrl}/login/$uid'), body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
       return resp.statusCode == 200 ? true : false;

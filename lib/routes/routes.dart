@@ -4,7 +4,6 @@ import 'package:invapp/screen/category/category_screen.dart';
 import 'package:invapp/screen/historic/historic_list.screen.dart';
 import 'package:invapp/screen/historic/historic_screen.dart';
 import 'package:invapp/screen/home/home_screen.dart';
-// import 'package:invapp/screen/home/home_screen.dart';
 import 'package:invapp/screen/loading/loading_screen.dart';
 import 'package:invapp/screen/login/login_screen.dart';
 import 'package:invapp/screen/menu/menu_screen.dart';

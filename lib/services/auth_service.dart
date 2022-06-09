@@ -30,15 +30,16 @@ class AuthService with ChangeNotifier {
     await _storage.delete(key: 'token');
   }
 
-  Future<bool> login(String email, String password) async {
+  Future login(String email, String password) async {
     this.authentify = true;
-    final resp = await http.post(  Uri.parse('${Enviroments.apiUrl}/login'), body: jsonEncode({'email': email, 'pass': password}), headers: {'Content-Type': 'application/json'});
+    final resp = await http.post( Uri.parse('${Enviroments.apiUrl}/login'), body: jsonEncode({'email': email, 'pass': password}), headers: {'Content-Type': 'application/json'});
     this.authentify = false;
+    if (resp == null) return null;
     if (resp.statusCode != 200) return false;
     final loginResponse = loginResponseFromJson(resp.body);
     this.user = loginResponse.data;
     await this._saveToken(loginResponse.token);
-    return true;
+    return user;
   }
 
   Future register({String name, String email, String pass, String user = 'App'}) async {

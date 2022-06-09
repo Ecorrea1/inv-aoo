@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:invapp/models/user/user.model.dart';
 import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/widgets/alert.dart';
 import 'package:invapp/widgets/buttons.dart';
@@ -41,10 +42,13 @@ class _FormLoginState extends State<FormLogin> {
             title: 'Ingrese', 
             onPressed: authService.authentify ? null : () async{
               FocusScope.of( context ).unfocus();
-              bool loginOk = await authService.login( emailController.text.trim(), passController.text.trim() );
-              ( loginOk ) 
-              ? Navigator.pushReplacementNamed( context, 'menu' ) 
-              : showAlert( context,'Alerta','Tuvimos algunos problemas al iniciar sesion' );
+              final resp = await authService.login( emailController.text.trim(), passController.text.trim() );
+              if( resp == null ) return showAlert( context,'Alerta','Tuvimos un problema al conectarnos con el servidor' );
+              if( resp == false ) return showAlert( context,'Alerta','Tuvimos un problema al iniciar sesion, verificar Credenciales de acceso' );
+              User user = resp;
+              user.resetPassCode 
+              ? Navigator.pushNamed( context, 'user-update' )
+              : Navigator.pushReplacementNamed( context, 'menu' );
             }
           ),
         ],

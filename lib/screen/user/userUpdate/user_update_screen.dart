@@ -99,13 +99,14 @@ class _FormUpdatedState extends State<_FormUpdated> {
     
     final _userService = UserService();
 
-    final data = {
+    Map<String, dynamic> data = {
       'name'  : nameController.text,
       'email' : emailController.text,
       'user'  : emailController.text
     };
 
     if ( passController.text.isNotEmpty ) data['pass'] = passController.text;
+    if ( user.user.resetPassCode ) data['resetPassCode'] = false;
 
     bool resp = await _userService.updateUser( uid: user.user.uid, data: data );
 
@@ -119,8 +120,8 @@ class _FormUpdatedState extends State<_FormUpdated> {
     }
   }
   _cleanController(){
-    nameController.text        = '';
-    emailController.text       = '';
-    passController.text        = '';
+    nameController.text  = '';
+    emailController.text = '';
+    passController.text  = '';
   }
 }

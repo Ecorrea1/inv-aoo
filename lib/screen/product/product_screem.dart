@@ -53,10 +53,8 @@ class ProductScreen extends StatelessWidget {
     );
   }
 
-  FloatingActionButton methodFloatUpdatePorduct(
-      User user, BuildContext context, Product product) {
+  FloatingActionButton methodFloatUpdatePorduct( User user, BuildContext context, Product product) {
     if (!user.role.privileges.modifyProducts) return null;
-
     return FloatingActionButton(
         child: Icon(Icons.edit),
         elevation: 1,
