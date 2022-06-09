@@ -107,14 +107,16 @@ class _FormUpdatedState extends State<_FormUpdated> {
       'user'  : emailController.text
     };
 
+    if (passController.text.isEmpty && pass2Controller.text.isNotEmpty) return showAlert(context, 'Actualizar Usuario', 'Las contraseñas no coinciden');
     if ( passController.text.isNotEmpty ) {
-      if (passController.text != pass2Controller.text) return showAlert(context, 'Actualizar Usuario', 'Las contraseñas no coinciden');
       if ( passController.text.length < 6 ) return showAlert(context, 'Actualizar Usuario', 'La contraseña debe tener al menos 6 caracteres');
-      if ( passController.text.length > 12 ) return showAlert(context, 'Actualizar Usuario', 'La contraseña debe tener menos de 20 caracteres');
-      if (passController.text == user.user.pass ) return showAlert(context, 'Actualizar Usuario', 'La contraseña no puede ser igual a la anterior');
+      if ( pass2Controller.text.isEmpty ) return showAlert(context, 'Actualizar Usuario', 'Repita la contraseña por favor');
+      if ( passController.text != pass2Controller.text ) return showAlert(context, 'Actualizar Usuario', 'Las contraseñas no coinciden');
+      if ( passController.text == user.user.pass ) return showAlert(context, 'Actualizar Usuario', 'La contraseña no puede ser igual a la anterior');
       data['pass'] = passController.text;
+      if ( user.user.resetPassCode ) data['resetPassCode'] = false;
     }
-    if ( user.user.resetPassCode ) data['resetPassCode'] = false;
+    
     bool resp = await _userService.updateUser( uid: user.user.uid, data: data );
     if (!resp)  return showAlert(context, 'Actualizar Producto', 'Hubieron Problemas con la actualizacion del item');
     _cleanController();
