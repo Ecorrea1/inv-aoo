@@ -85,7 +85,7 @@ class _FormUpdatedState extends State<_FormUpdated> {
           ),
           CustomButtom(
             title: 'Actualizar Cuenta', 
-            onPressed:() => _updatedUser(context, authService),
+            onPressed: () => _updatedUser(context, authService),
           ),
         ],
       ),
@@ -99,6 +99,7 @@ class _FormUpdatedState extends State<_FormUpdated> {
   }
 
   _updatedUser(context, AuthService user) async {
+    if(nameController.text.trim() == user.user.name &&  emailController.text.trim() == user.user.email) return showAlert(context, 'Error', 'No hay cambios para actualizar');
     if ( nameController.text.isEmpty || emailController.text.isEmpty )  return showAlert(context, 'Actualizar Usuario', 'Ingrese algun dato por favor ');
     final _userService = UserService();
     Map<String, dynamic> data = {
@@ -109,10 +110,10 @@ class _FormUpdatedState extends State<_FormUpdated> {
 
     if (passController.text.isEmpty && pass2Controller.text.isNotEmpty) return showAlert(context, 'Actualizar Usuario', 'Las contraseñas no coinciden');
     if ( passController.text.isNotEmpty ) {
+      if ( passController.text.trim() == user.user.pass ) return showAlert(context, 'Actualizar Usuario', 'La contraseña no puede ser igual a la anterior');
       if ( passController.text.length < 6 ) return showAlert(context, 'Actualizar Usuario', 'La contraseña debe tener al menos 6 caracteres');
       if ( pass2Controller.text.isEmpty ) return showAlert(context, 'Actualizar Usuario', 'Repita la contraseña por favor');
       if ( passController.text != pass2Controller.text ) return showAlert(context, 'Actualizar Usuario', 'Las contraseñas no coinciden');
-      if ( passController.text == user.user.pass ) return showAlert(context, 'Actualizar Usuario', 'La contraseña no puede ser igual a la anterior');
       data['pass'] = passController.text;
       if ( user.user.resetPassCode ) data['resetPassCode'] = false;
     }

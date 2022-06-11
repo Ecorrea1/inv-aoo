@@ -25,14 +25,12 @@ class _FormLoginState extends State<FormLogin> {
         children: [
           CustomImput(
             icon: Icons.email_outlined,
-            // labelText: 'Correo',
             placeholder: 'Ingrese su correo',
             keyboardType: TextInputType.emailAddress,
             textController: emailController,        
           ),
           CustomImput(
             icon: Icons.lock_outline,
-            // labelText: 'Contraseña',
             placeholder: 'Ingrese su contraseña',
             textController: passController,
             isPass: true,
