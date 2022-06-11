@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:invapp/models/user/user.model.dart';
 import 'package:invapp/services/auth_service.dart';
 import 'package:invapp/services/user_service.dart';
 import 'package:invapp/widgets/alert.dart';
@@ -14,7 +15,7 @@ class UserUpdateScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color( 0xffF2F2F2 ),
       appBar: AppBar(
-        title: Text('Cambio de contraseña'),
+        title: Text('Editar Usuario'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -42,15 +43,10 @@ class _FormUpdatedState extends State<_FormUpdated> {
   final emailController = TextEditingController();
   final passController  = TextEditingController();
   final pass2Controller  = TextEditingController();
-  String pass1 = '';
   @override
   Widget build( BuildContext context ) {
-    final authService   = Provider.of<AuthService>( context );
-     _addInfoController(
-      name : authService.user.name,
-      email: authService.user.email,
-      pass : authService.user.pass,
-    );
+    final authService   = Provider.of<AuthService>( context, listen: false );
+     _addInfoController( authService.user.name,  authService.user.email);
     return Container(
       margin: EdgeInsets.only( top: 20 ),
       padding: EdgeInsets.symmetric( horizontal: 30 ),
@@ -85,22 +81,18 @@ class _FormUpdatedState extends State<_FormUpdated> {
           ),
           CustomButtom(
             title: 'Actualizar Cuenta', 
-            onPressed: () => _updatedUser(context, authService),
+            onPressed: () => _updatedUser(context, authService.user),
           ),
         ],
       ),
     );
   }
 
-  _addInfoController({ name, email, pass}) async {
-    nameController.text  = name;
-    emailController.text = email;
-    passController.text  = pass;
-  }
+  _addInfoController(name, email ) async { nameController.text  = name; emailController.text = email; }
 
-  _updatedUser(context, AuthService user) async {
-    if(nameController.text.trim() == user.user.name &&  emailController.text.trim() == user.user.email) return showAlert(context, 'Error', 'No hay cambios para actualizar');
-    if ( nameController.text.isEmpty || emailController.text.isEmpty )  return showAlert(context, 'Actualizar Usuario', 'Ingrese algun dato por favor ');
+  _updatedUser(context, User user) async {
+    if(nameController.text.trim() == user.name &&  emailController.text.trim() == user.email && ( passController.text.isEmpty || pass2Controller.text.isEmpty) ) return showAlert(context, 'Error', 'No hay cambios para actualizar');
+    if ( nameController.text.isEmpty || emailController.text.isEmpty )  return showAlert(context, 'Actualizar Usuario', 'Ingrese todos los datos por favor');
     final _userService = UserService();
     Map<String, dynamic> data = {
       'name'  : nameController.text,
@@ -109,19 +101,19 @@ class _FormUpdatedState extends State<_FormUpdated> {
     };
 
     if (passController.text.isEmpty && pass2Controller.text.isNotEmpty) return showAlert(context, 'Actualizar Usuario', 'Las contraseñas no coinciden');
-    if ( passController.text.isNotEmpty ) {
-      if ( passController.text.trim() == user.user.pass ) return showAlert(context, 'Actualizar Usuario', 'La contraseña no puede ser igual a la anterior');
+    if ( passController.text.trim().isNotEmpty ) {
+      // if ( passController.text.trim() == user.pass ) return showAlert(context, 'Actualizar Usuario', 'La contraseña no puede ser igual a la anterior');
       if ( passController.text.length < 6 ) return showAlert(context, 'Actualizar Usuario', 'La contraseña debe tener al menos 6 caracteres');
       if ( pass2Controller.text.isEmpty ) return showAlert(context, 'Actualizar Usuario', 'Repita la contraseña por favor');
       if ( passController.text != pass2Controller.text ) return showAlert(context, 'Actualizar Usuario', 'Las contraseñas no coinciden');
-      data['pass'] = passController.text;
-      if ( user.user.resetPassCode ) data['resetPassCode'] = false;
+      data['pass'] = passController.text.trim();
+      if ( user.resetPassCode ) data['resetPassCode'] = false;
     }
     
-    bool resp = await _userService.updateUser( uid: user.user.uid, data: data );
+    bool resp = await _userService.updateUser( uid: user.uid, data: data );
     if (!resp)  return showAlert(context, 'Actualizar Producto', 'Hubieron Problemas con la actualizacion del item');
+    // showAlert(context, 'Actualizar Usuario', 'El usuario se actualizo correctamente');
     _cleanController();
-    showAlert(context, 'Actualizar Usuario', 'El usuario se actualizo correctamente');
     Navigator.pushReplacementNamed( context, 'login' );
   }
 
@@ -129,5 +121,6 @@ class _FormUpdatedState extends State<_FormUpdated> {
     nameController.text  = '';
     emailController.text = '';
     passController.text  = '';
+    pass2Controller.text = '';
   }
 }

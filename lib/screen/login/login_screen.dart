@@ -10,49 +10,43 @@ import 'package:invapp/widgets/logo_login.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
+class LoginScreen extends StatefulWidget { @override _LoginScreenState createState() => _LoginScreenState(); }
 class _LoginScreenState extends State<LoginScreen> {
   String version = '';
-
   @override
   void initState() {
     checkVersion(context);
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Color(0xffF2F2F2),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.9,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  LogoScreen(title: Enviroments.isProduction ? 'InvApp' : 'InvApp Dev'),
-                  FormLogin(),
-                  // LabelsLogin(
-                  // route: 'register',
-                  // title: '¿No tienes una cuenta?',
-                  // subtitle: 'Crear una cuenta!',
-                  // ),
-                  Text((Enviroments.isProduction) ? 'V$version' : 'V$version - dev',
-                      style: TextStyle(fontWeight: FontWeight.w300))
-                ],
-              ),
+  return Scaffold(
+      backgroundColor: Color(0xffF2F2F2),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.9,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                LogoScreen(title: Enviroments.isProduction ? 'InvApp' : 'InvApp Dev'),
+                FormLogin(),
+                // LabelsLogin(
+                // route: 'register',
+                // title: '¿No tienes una cuenta?',
+                // subtitle: 'Crear una cuenta!',
+                // ),
+                Text((Enviroments.isProduction) ? 'V$version' : 'V$version - dev',
+                    style: TextStyle(fontWeight: FontWeight.w300))
+              ],
             ),
           ),
-        ));
+        ),
+      )
+    );
   }
 
-  ///chequea la version para determinar si hay una versión nueva en las tiendas
   checkVersion(context) async {
     ConfigService configService = new ConfigService();
     Config appConfig = await configService.getAppConfig();
@@ -66,7 +60,6 @@ class _LoginScreenState extends State<LoginScreen> {
     if (versionStore > versionInstalada) _showVersionDialog(context, appConfig, info.version);
   }
 
-  ///muestra alerta de que hay una versión nueva en las tiendas
   _showVersionDialog(context, Config config, String versionActual) async {
     await showDialog<String>(
       context: context,
