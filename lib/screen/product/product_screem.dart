@@ -25,6 +25,11 @@ class ProductScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(actions: [
+        (!!user.role.privileges.modifyProducts)
+            ? IconButton(
+              icon: Icon( Icons.photo_camera, color: Colors.white ),
+              onPressed: () => Navigator.pushNamed(context, 'take-photo', arguments: product))
+            : Container(),
         (!!user.role.privileges.deleteProducts && product.group != 'Eliminados')
             ? IconButton(
                 icon: Icon(Icons.delete, color: Colors.white),
@@ -61,12 +66,17 @@ class ProductScreen extends StatelessWidget {
         onPressed: () => Navigator.pushNamed(context, 'update-product', arguments: product));
   }
 
-  Widget _productHeader(context, size, product) {
+  Widget _productHeader(context, size, Product product) {
     return Container(
         width: size.width,
         height: size.height * 0.25,
         color: Theme.of(context).primaryColor,
-        child: Icon(
+        child: product.img.isNotEmpty && product.img != 'foto'
+        ? Image.network(
+            product.img,
+            fit: BoxFit.cover,
+          )
+        : Icon(
           Icons.shopping_cart,
           size: 150,
           color: Colors.white,

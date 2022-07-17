@@ -12,6 +12,7 @@ import 'package:invapp/screen/product/menu/product_group_page.dart';
 import 'package:invapp/screen/product/menu/product_group_page_admin.dart';
 import 'package:invapp/screen/product/product_list_screen.dart';
 import 'package:invapp/screen/product/product_screem.dart';
+import 'package:invapp/screen/product/updateProduct/add_photo_product_screen.dart';
 import 'package:invapp/screen/product/updateProduct/update_product_screen.dart';
 import 'package:invapp/screen/register/register_screen.dart';
 // import 'package:invapp/screen/roles/roles_screen.dart';
@@ -48,6 +49,7 @@ final Map<String, Widget Function(BuildContext)>appRoutes  = {
   'user'            :(_) => UserListScreen(),
   'user-detail'     :(_) => UserScreen(),
   'user-update'     :(_) => UserUpdateScreen(),
+  'take-photo'      :(_) => TakePhoto(),
   // 'roles'           :(_) => RoleScreen(),
   // 'role-detail'     :(_) => RoleScreen()
 };
