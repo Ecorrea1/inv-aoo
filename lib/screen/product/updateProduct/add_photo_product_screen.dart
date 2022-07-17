@@ -22,7 +22,7 @@ class _TakePhotoState extends State<TakePhoto> {
     XFile img = await picker.pickImage(source: gallery ? ImageSource.gallery : ImageSource.camera);
     setState(() {
       if (img != null) _image = File(img.path);
-      print('No image selected.');
+      if (img == null) print('No image selected.');
     });
   }
 
@@ -66,7 +66,7 @@ class _TakePhotoState extends State<TakePhoto> {
         onPressed: () => getImage( gallery: false ),
         tooltip: 'Pick Image',
         child: Icon(Icons.add_a_photo),
-        isExtended: true,
+        // isExtended: true,
       ),
     );
   }
