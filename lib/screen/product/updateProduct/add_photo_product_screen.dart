@@ -19,7 +19,8 @@ class _TakePhotoState extends State<TakePhoto> {
   File _image;
   final ImagePicker picker = ImagePicker();
   Future getImage({@required bool gallery}) async {
-    XFile img = await picker.pickImage(source: gallery ? ImageSource.gallery : ImageSource.camera);
+    XFile img = await picker.pickImage(
+        source: gallery ? ImageSource.gallery : ImageSource.camera);
     setState(() {
       if (img != null) _image = File(img.path);
       if (img == null) print('No image selected.');
@@ -30,44 +31,50 @@ class _TakePhotoState extends State<TakePhoto> {
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
     final String email = authService.user.email;
-    Product product = ModalRoute.of(context).settings.arguments;
+    final Product product = ModalRoute.of(context).settings.arguments;
+    final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${product.name}', style: TextStyle(color: Colors.white)),
-        actions: [
-          _image == null
-              ? Container()
-              : IconButton(
-                  icon: Icon(Icons.save),
-                  onPressed: () => sendImage(product: product, email: email),
+      appBar: AppBar(title: Text('${product.name}', style: TextStyle(color: Colors.white)),),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+            child: _image == null
+                ? Text('Ninguna imagen seleccionada o tomada.')
+                : Image.file(
+                  _image, 
+                  filterQuality: FilterQuality.low,
+                  fit: BoxFit.scaleDown,
+                  height: size.height * 0.5,
                 ),
+          ),
+          _actionClickBtn(_image, product, email)
         ],
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Center(
-              child: _image == null
-                  ? Text('Ninguna imagen seleccionada o tomada.')
-                  : Image.file(_image),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: CustomButtom(
-                title: 'Galeria',
-                onPressed: () => getImage( gallery: true)
-              ),
-            )
-          ],
+    );
+  }
+
+  _actionClickBtn(File img, Product product, String email) {
+    if (img == null)
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+          child: CustomButtom(
+              title: 'Galeria', onPressed: () => getImage(gallery: true)),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => getImage( gallery: false ),
-        tooltip: 'Pick Image',
-        child: Icon(Icons.add_a_photo),
-        // isExtended: true,
-      ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+          child: CustomButtom(
+              title: 'Camara', onPressed: () => getImage(gallery: false)),
+        )
+      ],
+    );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+      child: CustomButtom( title: 'Guardar', onPressed: () => sendImage(product: product, email: email),),
     );
   }
 
