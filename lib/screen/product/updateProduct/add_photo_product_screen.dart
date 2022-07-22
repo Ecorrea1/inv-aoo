@@ -37,7 +37,7 @@ class _TakePhotoState extends State<TakePhoto> {
     return Scaffold(
       appBar: AppBar(title: Text('${product.name}', style: TextStyle(color: Colors.white)),),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             child: _image == null
@@ -57,19 +57,17 @@ class _TakePhotoState extends State<TakePhoto> {
 
   _actionClickBtn(File img, Product product, String email) {
     if (img == null)
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
-          child: CustomButtom(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+      child: Column(
+        children: [
+          CustomButtom(
               title: 'Galeria', onPressed: () => getImage(gallery: true)),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
-          child: CustomButtom(
-              title: 'Camara', onPressed: () => getImage(gallery: false)),
-        )
-      ],
+          SizedBox( height: 10 ),
+          CustomButtom(
+              title: 'Camara', onPressed: () => getImage(gallery: false))
+        ],
+      ),
     );
 
     return Padding(
