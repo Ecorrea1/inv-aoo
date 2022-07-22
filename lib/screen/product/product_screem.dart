@@ -46,11 +46,13 @@ class ProductScreen extends StatelessWidget {
                 onPressed: () => _updateProduct(context, product, user))
             : Container(),
       ], elevation: 0.0),
-      body: Column(
-        children: <Widget>[
-          _productHeader(context, size, product),
-          _productListData(size, product)
-        ],
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            _productHeader(context, size, product),
+            _productListData(size, product)
+          ],
+        ),
       ),
       floatingActionButton: methodFloatUpdatePorduct(user, context, product),
     );
@@ -67,14 +69,14 @@ class ProductScreen extends StatelessWidget {
   Widget _productHeader(context, size, Product product) {
     return Container(
         width: size.width,
-        height: size.height * 0.37,
+        height: size.height * 0.25,
         color: Theme.of(context).primaryColor,
         child: product.img.isNotEmpty && product.img != 'foto'
         ? Image.network(
             product.img,
-            filterQuality: FilterQuality.low,
             fit: BoxFit.cover,
-            height: size.height * 0.5,
+            filterQuality: FilterQuality.low,
+            // gaplessPlayback: true,
           )
         : Icon(
           Icons.shopping_cart,
@@ -86,7 +88,7 @@ class ProductScreen extends StatelessWidget {
   _productListData(size, Product product) {
     return Container(
       width: size.width * 0.9,
-      height: size.height * 0.5,
+      height: size.height * 0.63,
       padding: EdgeInsets.only(top: 10),
       child: Column(
         children: <Widget>[
@@ -123,7 +125,7 @@ class ProductScreen extends StatelessWidget {
                     color: (color == null) ? Colors.black : color),
               ),
             ]),
-        Divider(height: 15),
+        Divider(height: 20),
       ],
     );
   }
